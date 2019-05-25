@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">KontactPicker</string>
+    <string name="selected_contacts">Selected Contacts</string>
+</resources>

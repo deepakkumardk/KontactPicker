@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".KontactPickerActivity"
+    tools:menu="@menu/kontact_menu">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:minHeight="?actionBarSize"
+        app:subtitle=""
+        app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Small"
+        app:subtitleTextColor="@color/colorWhite"
+        app:title="Select Contacts"
+        app:titleTextColor="@color/colorWhite" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize"
+        android:scrollbars="vertical"
+        tools:itemCount="8"
+        tools:listitem="@layout/item_kontact" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:progressTint="@color/design_default_color_primary_dark"
+        android:visibility="gone"
+        tools:targetApi="lollipop" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="8dp"
+        android:background="@color/colorPrimary"
+        android:src="@drawable/ic_check_white" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
