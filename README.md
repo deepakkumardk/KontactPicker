@@ -1,5 +1,44 @@
-# KontactPicker
-A ContactPicker library for Android, written in Kotlin.
+# KontactPicker 
+[![](https://jitpack.io/v/deepakkumardk/KontactPicker.svg)](https://jitpack.io/#deepakkumardk/KontactPicker)
+
+A ContactPicker library for Android, written in [Kotlin](http://kotlinlang.org)
+
+## Usages
+```groovy
+allprojects {
+	repositories {
+	    maven { url 'https://jitpack.io' }
+	}
+}
+```
+
+```groovy
+dependencies {
+        implementation 'com.github.deepakkumardk:KontactPicker:$latest-version'
+}
+```
+
+### Activity
+
+**NOTE: This library is based on AndroidX artifacts**
+
+Please specify the **READ_CONTACT** permission in your manifest file
+
+```kotlin
+    KontactPicker.Builder(this)
+            .showPickerForResult(3000) //REQUEST_CODE
+```
+
+#### Handing Results
+```kotlin
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == 3000) {
+            val list = KontactPicker.getSelectedKontacts(data)
+            //Handle this list
+        }
+    }
+```
 
 
 ## License
