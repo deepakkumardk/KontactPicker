@@ -14,14 +14,15 @@ import androidx.appcompat.widget.SearchView
 import com.deepakkumardk.kontactpicker.model.MyContacts
 import kotlinx.android.synthetic.main.activity_kontact_picker.*
 import org.jetbrains.anko.doAsyncResult
-import org.jetbrains.anko.longToast
 import org.jetbrains.anko.onComplete
 import org.jetbrains.anko.sdk27.coroutines.onClick
-import org.jetbrains.anko.toast
 
 class KontactPickerActivity : AppCompatActivity() {
-    private var myContacts: MutableList<MyContacts> = ArrayList()
+    private var myKontacts: MutableList<MyContacts> = ArrayList()
+    private var selectedKontacts: MutableList<MyContacts> = ArrayList()
     private var kontactsAdapter: KontactsAdapter? = null
+    private var debugMode = false
+    private var smallView = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,9 +30,11 @@ class KontactPickerActivity : AppCompatActivity() {
 
         val intent = intent
         val builder = intent.getParcelableExtra<KontactPicker.Builder>("builder")
+        debugMode = builder.debugMode == 1
+        smallView = builder.selectionTickView == 0
 
         initToolbar()
-        kontactsAdapter = KontactsAdapter(myContacts) { contact, position, view ->
+        kontactsAdapter = KontactsAdapter(myKontacts, smallView) { contact, position, view ->
             onItemClick(contact, position, view)
         }
         recycler_view.init(applicationContext)
@@ -40,7 +43,7 @@ class KontactPickerActivity : AppCompatActivity() {
 
         fab_done.onClick {
             val result = Intent()
-            val list = kontactsAdapter?.getSelectedKontacts()
+            val list = getSelectedKontacts()
             result.putExtra("extra_selected_contacts", list)
             setResult(Activity.RESULT_OK, result)
             finish()
@@ -73,7 +76,7 @@ class KontactPickerActivity : AppCompatActivity() {
             }
         })
         search.setOnCloseListener {
-            //            kontactsAdapter?.updateList(myContacts)
+            //            kontactsAdapter?.updateList(myKontacts)
             return@setOnCloseListener true
 
         }
@@ -84,7 +87,7 @@ class KontactPickerActivity : AppCompatActivity() {
             }
 
             override fun onMenuItemActionCollapse(menuItem: MenuItem): Boolean {
-                kontactsAdapter?.updateList(myContacts)
+                kontactsAdapter?.updateList(myKontacts)
                 return true
             }
         })
@@ -94,33 +97,45 @@ class KontactPickerActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.action_search -> toast("Search")
+            android.R.id.home -> finish()
+            R.id.action_search -> log("Search")
             else -> super.onOptionsItemSelected(item)
         }
         return super.onOptionsItemSelected(item)
     }
 
-
-    private fun getKontactsResult(list: List<MyContacts>?): ArrayList<MyContacts> {
-        val kontactsResults = arrayListOf<MyContacts>()
-        list.let {
-            for (contact in it!!) {
-
+    @Suppress("UNUSED_PARAMETER")
+    private fun onItemClick(contact: MyContacts?, position: Int, view: View) {
+        contact?.isSelected = !contact?.isSelected!!
+        when (contact.isSelected) {
+            true -> {
+                view.show()
+                selectedKontacts.add(contact)
+            }
+            false -> {
+                view.hide()
+                selectedKontacts.remove(contact)
             }
         }
-        return kontactsResults
+        setSubtitle()
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    private fun onItemClick(contact: MyContacts?, position: Int, view: View) = setSubtitle()
+    private fun getSelectedKontacts(): ArrayList<MyContacts> {
+        val list = arrayListOf<MyContacts>()
+        for (contact in this.selectedKontacts) {
+            if (contact.isSelected)
+                list.add(contact)
+        }
+        return list
+    }
 
     private fun setSubtitle() {
-        supportActionBar?.subtitle = "${kontactsAdapter?.getSelectedKontacts()?.size} of ${myContacts.size} Contacts"
+        supportActionBar?.subtitle = "${getSelectedKontacts().size} of ${myKontacts.size} Contacts"
     }
 
     private fun filterContacts(text: String) {
         val tempList = arrayListOf<MyContacts>()
-        for (contact in myContacts) {
+        for (contact in myKontacts) {
             val name = contact.contactName
             val number = contact.contactNumber
             if (name?.contains(text, true)!! || number?.contains(text)!!) {
@@ -156,20 +171,25 @@ class KontactPickerActivity : AppCompatActivity() {
                     number = it.getString(numberIndex)
                     contacts.contactName = name
                     contacts.contactNumber = number
-                    myContacts.add(contacts)
+                    myKontacts.add(contacts)
                 }
+                it.close()
             }
             onComplete {
-                myContacts.sortBy {
+                myKontacts.sortBy {
                     it.contactName
                 }
                 val fetchingTime = System.currentTimeMillis() - startTime
-                longToast("Fetching Completed in $fetchingTime ms")
+
+                if (debugMode) {
+//                    longToast("Fetching Completed in $fetchingTime ms")
+                    log("Fetching Completed in $fetchingTime ms")
+                }
                 setSubtitle()
                 progress_bar.hide()
                 kontactsAdapter?.notifyDataSetChanged()
             }
-            return@doAsyncResult myContacts
+            return@doAsyncResult myKontacts
         }
     }
 

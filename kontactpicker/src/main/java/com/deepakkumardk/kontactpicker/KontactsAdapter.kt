@@ -11,6 +11,7 @@ import org.jetbrains.anko.find
 
 class KontactsAdapter(
     private var contactsList: MutableList<MyContacts>?,
+    private val smallView: Boolean,
     private val listener: (MyContacts, Int, View) -> Unit
 ) : RecyclerView.Adapter<KontactsAdapter.KontactViewHolder>() {
 
@@ -34,17 +35,26 @@ class KontactsAdapter(
             .into(holder.contactImage)*/
 
         holder.itemView.setOnClickListener {
-            contact.isSelected = !contact.isSelected
-            listener(contact, holder.adapterPosition, holder.contactTick)
-            when (contact.isSelected) {
-                true -> holder.contactTick.show()
-                false -> holder.contactTick.hide()
-            }
+            if (smallView)
+                listener(contact, holder.adapterPosition, holder.contactTickSmall)
+            else
+                listener(contact, holder.adapterPosition, holder.contactTickLarge)
         }
 
         when (contact.isSelected) {
-            true -> holder.contactTick.show()
-            false -> holder.contactTick.hide()
+            true -> {
+                if (smallView)
+                    holder.contactTickSmall.show()
+                else
+                    holder.contactTickLarge.show()
+            }
+            false -> {
+                if (smallView)
+                    holder.contactTickSmall.hide()
+                else
+                    holder.contactTickLarge.hide()
+
+            }
         }
     }
 
@@ -55,20 +65,12 @@ class KontactsAdapter(
         notifyDataSetChanged()
     }
 
-    fun getSelectedKontacts(): ArrayList<MyContacts> {
-        val list = arrayListOf<MyContacts>()
-        for (contact in this.contactsList!!) {
-            if (contact.isSelected)
-                list.add(contact)
-        }
-        return list
-    }
-
     class KontactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val contactName = view.find<TextView>(R.id.contact_name)
         val contactMobile = view.find<TextView>(R.id.contact_mobile)
         val contactImage = view.find<CircleImageView>(R.id.contact_image)
-        val contactTick = view.find<CircleImageView>(R.id.contact_tick)
+        val contactTickSmall = view.find<CircleImageView>(R.id.contact_tick_small)
+        val contactTickLarge = view.find<CircleImageView>(R.id.contact_tick_large)
     }
 
 }
