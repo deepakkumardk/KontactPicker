@@ -44,6 +44,7 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.8.0'
 
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 }
 repositories {
     mavenCentral()

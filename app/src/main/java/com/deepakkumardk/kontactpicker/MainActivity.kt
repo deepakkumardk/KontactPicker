@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.deepakkumardk.kontactpicker.model.ImageMode
 import com.deepakkumardk.kontactpicker.model.SelectionTickView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private fun openKontactPicker() {
         KontactPicker.Builder(this)
             .setDebugMode(true)
+            .setImageMode(ImageMode.None)
             .setSelectionTickView(SelectionTickView.SmallView)
             .showPickerForResult(3000)
     }

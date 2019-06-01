@@ -3,6 +3,7 @@ package com.deepakkumardk.kontactpicker
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.deepakkumardk.kontactpicker.model.MyContacts
@@ -15,7 +16,8 @@ import org.jetbrains.anko.find
 
 class KontactsAdapter(
     private var contactsList: MutableList<MyContacts>?,
-    private val smallView: Boolean,
+    private val selectionTickView: Boolean,
+    private val imageMode: Int,
     private val listener: (MyContacts, Int, View) -> Unit
 ) : RecyclerView.Adapter<KontactsAdapter.KontactViewHolder>() {
 
@@ -30,6 +32,10 @@ class KontactsAdapter(
         holder.contactName.text = contact?.contactName
         if (contact?.contactNumber?.isNotEmpty()!!)
             holder.contactMobile.text = contact.contactNumber
+
+        when (imageMode) {
+            1 -> holder.contactImage.setImageDrawable(getTextDrawable(contact.contactName!!))
+        }
 //        (Optimize this)
         /*Glide.with(holder.itemView.context)
             .load(contactsList[position].contactImageByte)
@@ -39,7 +45,7 @@ class KontactsAdapter(
             .into(holder.contactImage)*/
 
         holder.itemView.setOnClickListener {
-            if (smallView)
+            if (!selectionTickView)
                 listener(contact, holder.adapterPosition, holder.contactTickSmall)
             else
                 listener(contact, holder.adapterPosition, holder.contactTickLarge)
@@ -47,17 +53,16 @@ class KontactsAdapter(
 
         when (contact.isSelected) {
             true -> {
-                if (smallView)
+                if (!selectionTickView)
                     holder.contactTickSmall.show()
                 else
                     holder.contactTickLarge.show()
             }
             false -> {
-                if (smallView)
+                if (!selectionTickView)
                     holder.contactTickSmall.hide()
                 else
                     holder.contactTickLarge.hide()
-
             }
         }
     }
@@ -74,7 +79,7 @@ class KontactsAdapter(
         val contactMobile = view.find<TextView>(R.id.contact_mobile)
         val contactImage = view.find<CircleImageView>(R.id.contact_image)
         val contactTickSmall = view.find<CircleImageView>(R.id.contact_tick_small)
-        val contactTickLarge = view.find<CircleImageView>(R.id.contact_tick_large)
+        val contactTickLarge = view.find<ImageView>(R.id.contact_tick_large)
     }
 
 }

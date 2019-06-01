@@ -32,7 +32,8 @@ class KontactPickerActivity : AppCompatActivity() {
     private var selectedKontacts: MutableList<MyContacts> = ArrayList()
     private var kontactsAdapter: KontactsAdapter? = null
     private var debugMode = false
-    private var smallView = true
+    private var selectionTickView = false
+    private var imageMode = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +42,13 @@ class KontactPickerActivity : AppCompatActivity() {
         val intent = intent
         val builder = intent.getParcelableExtra<KontactPicker.Builder>("builder")
         debugMode = builder.debugMode == 1
-        smallView = builder.selectionTickView == 0
+        selectionTickView = builder.selectionTickView == 1
+        imageMode = builder.imageMode
+
         logInitialValues()
 
         initToolbar()
-        kontactsAdapter = KontactsAdapter(myKontacts, smallView) { contact, position, view ->
+        kontactsAdapter = KontactsAdapter(myKontacts, selectionTickView, imageMode) { contact, position, view ->
             onItemClick(contact, position, view)
         }
         recycler_view.init(applicationContext)
@@ -109,9 +112,12 @@ class KontactPickerActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun logInitialValues(): Unit {
-        log("DebugMode: $debugMode")
-        log("SelectionTickVIew: $smallView")
+    private fun logInitialValues() {
+        if (debugMode) {
+            log("DebugMode: $debugMode")
+            log("SelectionTickVIew: $selectionTickView")
+            log("Image Mode: $imageMode")
+        }
     }
 
     private fun initToolbar() {
@@ -186,7 +192,7 @@ class KontactPickerActivity : AppCompatActivity() {
                     loadContacts()
                 } else {
                     // permission denied, boo! Disable the functionality that depends on this permission.
-                    alert(title= "Permission Request",message = "Please allow us to show contacts.") {
+                    alert(title = "Permission Request", message = "Please allow us to show contacts.") {
                         yesButton { checkPermission() }
                     }.show()
                 }
@@ -206,7 +212,7 @@ class KontactPickerActivity : AppCompatActivity() {
         )
 
         val cr = contentResolver
-        val myContactsList = doAsyncResult {
+        doAsyncResult {
             cr.query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection,
                 null, null, null
