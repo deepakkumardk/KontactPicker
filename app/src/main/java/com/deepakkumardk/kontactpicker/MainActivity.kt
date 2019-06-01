@@ -11,6 +11,10 @@ import androidx.core.content.ContextCompat
 import com.deepakkumardk.kontactpicker.model.SelectionTickView
 import kotlinx.android.synthetic.main.activity_main.*
 
+/**
+ * Created by Deepak Kumar on 25/05/2019
+ */
+
 class MainActivity : AppCompatActivity() {
     private var myContacts: ArrayList<Contact>? = ArrayList()
     private var contactsAdapter: ContactAdapter? = null
@@ -23,30 +27,14 @@ class MainActivity : AppCompatActivity() {
         recycler_view.init(applicationContext)
         recycler_view.adapter = contactsAdapter
 
-        kontact_picker_btn.setOnClickListener { checkPermission() }
+        kontact_picker_btn.setOnClickListener { openKontactPicker() }
     }
 
     private fun openKontactPicker() {
         KontactPicker.Builder(this)
             .setDebugMode(true)
-            .setSelectionTickView(SelectionTickView.LargeView)
+            .setSelectionTickView(SelectionTickView.SmallView)
             .showPickerForResult(3000)
-    }
-
-    private fun checkPermission() {
-        val contactReadPermission = ContextCompat.checkSelfPermission(
-            this, Manifest.permission.READ_CONTACTS
-        ) == PackageManager.PERMISSION_GRANTED
-        when {
-            contactReadPermission -> {
-                openKontactPicker()
-            }
-            else -> when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
-                    requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), 2001)
-                }
-            }
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -1,4 +1,4 @@
-# KontactPicker 
+# KontactPicker
 [![](https://jitpack.io/v/deepakkumardk/KontactPicker.svg)](https://jitpack.io/#deepakkumardk/KontactPicker)
 
 A ContactPicker library for Android, written in [Kotlin](http://kotlinlang.org)

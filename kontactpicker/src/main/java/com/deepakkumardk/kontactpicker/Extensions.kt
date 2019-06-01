@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Extension functions
+ * Created by Deepak Kumar on 25/05/2019
  */
 fun View?.show() {
     this?.visibility = View.VISIBLE

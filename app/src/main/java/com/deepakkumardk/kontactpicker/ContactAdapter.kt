@@ -7,6 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
 
+/**
+ * Created by Deepak Kumar on 25/05/2019
+ */
+
 class ContactAdapter(private var contactsList: ArrayList<Contact>?) :
     RecyclerView.Adapter<ContactAdapter.MyViewHolder>() {
 

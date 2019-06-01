@@ -1,9 +1,12 @@
 package com.deepakkumardk.kontactpicker
 
+import android.Manifest
 import android.app.Activity
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.view.Menu
@@ -11,11 +14,18 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import com.deepakkumardk.kontactpicker.model.MyContacts
 import kotlinx.android.synthetic.main.activity_kontact_picker.*
+import org.jetbrains.anko.alert
 import org.jetbrains.anko.doAsyncResult
 import org.jetbrains.anko.onComplete
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.yesButton
+
+/**
+ * Created by Deepak Kumar on 25/05/2019
+ */
 
 class KontactPickerActivity : AppCompatActivity() {
     private var myKontacts: MutableList<MyContacts> = ArrayList()
@@ -32,6 +42,7 @@ class KontactPickerActivity : AppCompatActivity() {
         val builder = intent.getParcelableExtra<KontactPicker.Builder>("builder")
         debugMode = builder.debugMode == 1
         smallView = builder.selectionTickView == 0
+        logInitialValues()
 
         initToolbar()
         kontactsAdapter = KontactsAdapter(myKontacts, smallView) { contact, position, view ->
@@ -39,7 +50,7 @@ class KontactPickerActivity : AppCompatActivity() {
         }
         recycler_view.init(applicationContext)
         recycler_view.adapter = kontactsAdapter
-        loadContacts()
+        checkPermission()
 
         fab_done.onClick {
             val result = Intent()
@@ -48,12 +59,6 @@ class KontactPickerActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK, result)
             finish()
         }
-    }
-
-    private fun initToolbar() {
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(resources.getDrawable(R.drawable.ic_arrow_back))
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -104,6 +109,17 @@ class KontactPickerActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun logInitialValues(): Unit {
+        log("DebugMode: $debugMode")
+        log("SelectionTickVIew: $smallView")
+    }
+
+    private fun initToolbar() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(resources.getDrawable(R.drawable.ic_arrow_back))
+    }
+
     @Suppress("UNUSED_PARAMETER")
     private fun onItemClick(contact: MyContacts?, position: Int, view: View) {
         contact?.isSelected = !contact?.isSelected!!
@@ -143,6 +159,41 @@ class KontactPickerActivity : AppCompatActivity() {
             }
         }
         kontactsAdapter?.updateList(tempList)
+    }
+
+    private fun checkPermission() {
+        val contactReadPermission = ContextCompat.checkSelfPermission(
+            this, Manifest.permission.READ_CONTACTS
+        ) == PackageManager.PERMISSION_GRANTED
+        when {
+            contactReadPermission -> {
+                loadContacts()
+            }
+            else -> when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
+                    requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), RC_READ_CONTACTS)
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            RC_READ_CONTACTS -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // permission was granted, yay! Do the contacts-related task you need to do.
+                    loadContacts()
+                } else {
+                    // permission denied, boo! Disable the functionality that depends on this permission.
+                    alert(title= "Permission Request",message = "Please allow us to show contacts.") {
+                        yesButton { checkPermission() }
+                    }.show()
+                }
+                return
+
+            }
+        }
     }
 
     private fun loadContacts() {

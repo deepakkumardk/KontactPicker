@@ -9,6 +9,10 @@ import com.deepakkumardk.kontactpicker.model.MyContacts
 import de.hdodenhof.circleimageview.CircleImageView
 import org.jetbrains.anko.find
 
+/**
+ * Created by Deepak Kumar on 25/05/2019
+ */
+
 class KontactsAdapter(
     private var contactsList: MutableList<MyContacts>?,
     private val smallView: Boolean,

@@ -8,6 +8,10 @@ import androidx.fragment.app.Fragment
 import com.deepakkumardk.kontactpicker.model.MyContacts
 import com.deepakkumardk.kontactpicker.model.SelectionTickView
 
+/**
+ * Created by Deepak Kumar on 25/05/2019
+ */
+
 class KontactPicker {
 
     companion object {
