@@ -9,8 +9,10 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class MyContacts(
+    var contactId: String = "",
     var contactName: String? = null,
     var contactNumber: String? = null,
     var isSelected: Boolean = false,
+    var photoUri: String? = null,
     var contactNumberList: ArrayList<String> = arrayListOf()
 ) : Parcelable

@@ -17,11 +17,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import com.deepakkumardk.kontactpicker.model.MyContacts
 import kotlinx.android.synthetic.main.activity_kontact_picker.*
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.doAsyncResult
-import org.jetbrains.anko.onComplete
+import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
-import org.jetbrains.anko.yesButton
 
 /**
  * Created by Deepak Kumar on 25/05/2019
@@ -48,7 +45,7 @@ class KontactPickerActivity : AppCompatActivity() {
         logInitialValues()
 
         initToolbar()
-        kontactsAdapter = KontactsAdapter(myKontacts, selectionTickView, imageMode) { contact, position, view ->
+        kontactsAdapter = KontactsAdapter(this, myKontacts, selectionTickView, imageMode) { contact, position, view ->
             onItemClick(contact, position, view)
         }
         recycler_view.init(applicationContext)
@@ -208,7 +205,8 @@ class KontactPickerActivity : AppCompatActivity() {
         val projection = arrayOf(
             ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
             ContactsContract.Contacts.DISPLAY_NAME,
-            ContactsContract.CommonDataKinds.Phone.NUMBER
+            ContactsContract.CommonDataKinds.Phone.NUMBER,
+            ContactsContract.CommonDataKinds.Phone.PHOTO_URI
         )
 
         val cr = contentResolver
@@ -217,17 +215,31 @@ class KontactPickerActivity : AppCompatActivity() {
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection,
                 null, null, null
             )?.use {
+                val idIndex = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID)
                 val nameIndex = it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
                 val numberIndex = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                var photoIndex = 0
 
+                if (imageMode == 2)
+                    photoIndex = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+
+                var id: String
                 var name: String
                 var number: String
+                var photoUri: String
                 while (it.moveToNext()) {
                     val contacts = MyContacts()
+                    id = it.getString(idIndex)
                     name = it.getString(nameIndex)
                     number = it.getString(numberIndex)
+                    contacts.contactId = id
                     contacts.contactName = name
                     contacts.contactNumber = number
+
+                    if (imageMode == 2) {
+                        photoUri = it.getString(photoIndex)
+                        contacts.photoUri = photoUri
+                    }
                     myKontacts.add(contacts)
                 }
                 it.close()
@@ -239,14 +251,13 @@ class KontactPickerActivity : AppCompatActivity() {
                 val fetchingTime = System.currentTimeMillis() - startTime
 
                 if (debugMode) {
-//                    longToast("Fetching Completed in $fetchingTime ms")
+                    longToast("Fetching Completed in $fetchingTime ms")
                     log("Fetching Completed in $fetchingTime ms")
                 }
                 setSubtitle()
                 progress_bar.hide()
                 kontactsAdapter?.notifyDataSetChanged()
             }
-            return@doAsyncResult myKontacts
         }
     }
 

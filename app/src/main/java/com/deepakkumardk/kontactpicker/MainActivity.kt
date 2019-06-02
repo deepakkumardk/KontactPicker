@@ -1,13 +1,9 @@
 package com.deepakkumardk.kontactpicker
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.deepakkumardk.kontactpicker.model.ImageMode
 import com.deepakkumardk.kontactpicker.model.SelectionTickView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -34,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     private fun openKontactPicker() {
         KontactPicker.Builder(this)
             .setDebugMode(true)
-            .setImageMode(ImageMode.None)
+            .setImageMode(ImageMode.UserImageMode)
             .setSelectionTickView(SelectionTickView.SmallView)
             .showPickerForResult(3000)
     }
@@ -43,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == 3000) {
             val list = KontactPicker.getSelectedKontacts(data)
+            log("$list")
             title_selected_contacts.setText(R.string.selected_contacts)
             myContacts = arrayListOf()
             if (list != null) {

@@ -1,20 +1,24 @@
 package com.deepakkumardk.kontactpicker
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.deepakkumardk.kontactpicker.model.MyContacts
 import de.hdodenhof.circleimageview.CircleImageView
 import org.jetbrains.anko.find
+import org.jetbrains.anko.runOnUiThread
 
 /**
  * Created by Deepak Kumar on 25/05/2019
  */
 
 class KontactsAdapter(
+    private var context: Context,
     private var contactsList: MutableList<MyContacts>?,
     private val selectionTickView: Boolean,
     private val imageMode: Int,
@@ -35,6 +39,15 @@ class KontactsAdapter(
 
         when (imageMode) {
             1 -> holder.contactImage.setImageDrawable(getTextDrawable(contact.contactName!!))
+            2 -> {
+                context.getPhoto(contact.contactId.toLong()) {
+                    context.runOnUiThread {
+                        Glide.with(context)
+                            .load(it)
+                            .into(holder.contactImage)
+                    }
+                }
+            }
         }
 //        (Optimize this)
         /*Glide.with(holder.itemView.context)

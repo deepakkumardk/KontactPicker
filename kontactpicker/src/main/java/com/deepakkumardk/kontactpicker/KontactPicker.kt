@@ -80,7 +80,7 @@ class KontactPicker {
             this.imageMode = when (imageMode) {
                 ImageMode.None -> 0
                 ImageMode.TextMode -> 1
-//                is ImageMode.UserImageMode -> 2
+                ImageMode.UserImageMode -> 2
             }
             log("imageMode ${this.imageMode}")
             return this
@@ -100,9 +100,9 @@ class KontactPicker {
 
 
         override fun writeToParcel(dest: Parcel?, flags: Int) {
-            dest?.writeValue(debugMode)
-            dest?.writeValue(imageMode)
-            dest?.writeValue(selectionTickView)
+            dest?.writeInt(debugMode)
+            dest?.writeInt(imageMode)
+            dest?.writeInt(selectionTickView)
         }
 
         override fun describeContents(): Int {
