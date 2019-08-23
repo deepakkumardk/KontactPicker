@@ -1,13 +1,9 @@
 package com.deepakkumardk.kontactpicker
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.deepakkumardk.kontactpicker.model.ImageMode
 import com.deepakkumardk.kontactpicker.model.SelectionTickView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -34,8 +30,8 @@ class MainActivity : AppCompatActivity() {
     private fun openKontactPicker() {
         KontactPicker.Builder(this)
             .setDebugMode(true)
-            .setImageMode(ImageMode.None)
-            .setSelectionTickView(SelectionTickView.SmallView)
+            .setImageMode(ImageMode.TextMode)
+            .setSelectionTickView(SelectionTickView.LargeView)
             .showPickerForResult(3000)
     }
 

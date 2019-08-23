@@ -17,11 +17,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import com.deepakkumardk.kontactpicker.model.MyContacts
 import kotlinx.android.synthetic.main.activity_kontact_picker.*
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.doAsyncResult
-import org.jetbrains.anko.onComplete
+import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
-import org.jetbrains.anko.yesButton
 
 /**
  * Created by Deepak Kumar on 25/05/2019
@@ -32,8 +29,8 @@ class KontactPickerActivity : AppCompatActivity() {
     private var selectedKontacts: MutableList<MyContacts> = ArrayList()
     private var kontactsAdapter: KontactsAdapter? = null
     private var debugMode = false
-    private var selectionTickView = false
     private var imageMode = 0
+    private var selectionTickView = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +39,8 @@ class KontactPickerActivity : AppCompatActivity() {
         val intent = intent
         val builder = intent.getParcelableExtra<KontactPicker.Builder>("builder")
         debugMode = builder.debugMode == 1
-        selectionTickView = builder.selectionTickView == 1
         imageMode = builder.imageMode
+        selectionTickView = builder.selectionTickView
 
         logInitialValues()
 
@@ -51,7 +48,7 @@ class KontactPickerActivity : AppCompatActivity() {
         kontactsAdapter = KontactsAdapter(myKontacts, selectionTickView, imageMode) { contact, position, view ->
             onItemClick(contact, position, view)
         }
-        recycler_view.init(applicationContext)
+        recycler_view.init(this)
         recycler_view.adapter = kontactsAdapter
         checkPermission()
 
@@ -239,7 +236,7 @@ class KontactPickerActivity : AppCompatActivity() {
                 val fetchingTime = System.currentTimeMillis() - startTime
 
                 if (debugMode) {
-//                    longToast("Fetching Completed in $fetchingTime ms")
+                    longToast("Fetching Completed in $fetchingTime ms")
                     log("Fetching Completed in $fetchingTime ms")
                 }
                 setSubtitle()

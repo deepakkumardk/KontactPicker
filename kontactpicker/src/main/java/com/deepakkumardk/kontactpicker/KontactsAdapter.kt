@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.deepakkumardk.kontactpicker.model.MyContacts
 import de.hdodenhof.circleimageview.CircleImageView
 import org.jetbrains.anko.find
@@ -16,7 +17,7 @@ import org.jetbrains.anko.find
 
 class KontactsAdapter(
     private var contactsList: MutableList<MyContacts>?,
-    private val selectionTickView: Boolean,
+    private val selectionTickView: Int,
     private val imageMode: Int,
     private val listener: (MyContacts, Int, View) -> Unit
 ) : RecyclerView.Adapter<KontactsAdapter.KontactViewHolder>() {
@@ -34,18 +35,14 @@ class KontactsAdapter(
             holder.contactMobile.text = contact.contactNumber
 
         when (imageMode) {
+            0 -> Glide.with(holder.itemView.context)
+                .load(R.drawable.ic_account_circle_white)
+                .into(holder.contactImage)
             1 -> holder.contactImage.setImageDrawable(getTextDrawable(contact.contactName!!))
         }
-//        (Optimize this)
-        /*Glide.with(holder.itemView.context)
-            .load(contactsList[position].contactImageByte)
-            .asBitmap()
-            .placeholder(R.drawable.ic_account_circle_white)
-            .error(R.drawable.ic_account_circle_white)
-            .into(holder.contactImage)*/
 
         holder.itemView.setOnClickListener {
-            if (!selectionTickView)
+            if (selectionTickView == 0)
                 listener(contact, holder.adapterPosition, holder.contactTickSmall)
             else
                 listener(contact, holder.adapterPosition, holder.contactTickLarge)
@@ -53,13 +50,13 @@ class KontactsAdapter(
 
         when (contact.isSelected) {
             true -> {
-                if (!selectionTickView)
+                if (selectionTickView == 0)
                     holder.contactTickSmall.show()
                 else
                     holder.contactTickLarge.show()
             }
             false -> {
-                if (!selectionTickView)
+                if (selectionTickView == 0)
                     holder.contactTickSmall.hide()
                 else
                     holder.contactTickLarge.hide()

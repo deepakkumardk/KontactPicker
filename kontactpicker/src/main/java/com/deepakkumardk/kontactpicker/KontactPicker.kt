@@ -100,9 +100,9 @@ class KontactPicker {
 
 
         override fun writeToParcel(dest: Parcel?, flags: Int) {
-            dest?.writeValue(debugMode)
-            dest?.writeValue(imageMode)
-            dest?.writeValue(selectionTickView)
+            dest?.writeInt(debugMode)
+            dest?.writeInt(imageMode)
+            dest?.writeInt(selectionTickView)
         }
 
         override fun describeContents(): Int {

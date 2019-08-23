@@ -7,7 +7,6 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amulyakhare.textdrawable.TextDrawable
-import kotlin.random.Random
 
 /**
  * Extension functions
