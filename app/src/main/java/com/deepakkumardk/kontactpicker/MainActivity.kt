@@ -25,6 +25,21 @@ class MainActivity : AppCompatActivity() {
         recycler_view.adapter = contactsAdapter
 
         kontact_picker_btn.setOnClickListener { openKontactPicker() }
+        get_all_kontact_btn.setOnClickListener { showAllKontacts() }
+
+    }
+
+    private fun showAllKontacts() {
+        progress_bar.show()
+        myContacts?.clear()
+        contactsAdapter?.updateList(myContacts)
+        KontactPicker.getAllKontacts(this) {
+            progress_bar.hide()
+            for (contact in it) {
+                myContacts?.add(Contact(contact.contactName, contact.contactNumber))
+            }
+            contactsAdapter?.updateList(myContacts)
+        }
     }
 
     private fun openKontactPicker() {

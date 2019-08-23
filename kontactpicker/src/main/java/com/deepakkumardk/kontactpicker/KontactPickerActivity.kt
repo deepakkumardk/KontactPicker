@@ -1,6 +1,8 @@
 package com.deepakkumardk.kontactpicker
 
 import android.Manifest
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.app.SearchManager
 import android.content.Context
@@ -36,7 +38,6 @@ class KontactPickerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kontact_picker)
 
-        val intent = intent
         val builder = intent.getParcelableExtra<KontactPicker.Builder>("builder")
         debugMode = builder.debugMode == 1
         imageMode = builder.imageMode
@@ -67,6 +68,7 @@ class KontactPickerActivity : AppCompatActivity() {
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val search = menu?.findItem(R.id.action_search)?.actionView as SearchView
 
+        search.queryHint = getString(R.string.search_hint)
         search.apply {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
         }
@@ -88,11 +90,13 @@ class KontactPickerActivity : AppCompatActivity() {
 
         menu.findItem(R.id.action_search)?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(menuItem: MenuItem): Boolean {
+                animateToolbar()
                 return true
             }
 
             override fun onMenuItemActionCollapse(menuItem: MenuItem): Boolean {
                 kontactsAdapter?.updateList(myKontacts)
+                supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.color.colorPrimary))
                 return true
             }
         })
@@ -107,6 +111,14 @@ class KontactPickerActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun animateToolbar() {
+        val backgroundColorAnimator = ObjectAnimator.ofObject(
+            toolbar, "backgroundColor", ArgbEvaluator(), 0x008577, 0xffffff
+        )
+        backgroundColorAnimator.duration = 200
+        backgroundColorAnimator.start()
     }
 
     private fun logInitialValues() {
@@ -184,7 +196,7 @@ class KontactPickerActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             RC_READ_CONTACTS -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the contacts-related task you need to do.
                     loadContacts()
                 } else {

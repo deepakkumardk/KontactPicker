@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.deepakkumardk.kontactpicker.model.ImageMode
 import com.deepakkumardk.kontactpicker.model.MyContacts
 import com.deepakkumardk.kontactpicker.model.SelectionTickView
+import com.deepakkumardk.kontactpicker.util.getAllContacts
 
 /**
  * Created by Deepak Kumar on 25/05/2019
@@ -35,6 +36,15 @@ class KontactPicker {
                 }
             }
             return phoneList
+        }
+
+        /**
+         * Get All contacts with name and phone number
+         */
+        fun getAllKontacts(activity: Activity?, onSuccess: (MutableList<MyContacts>) -> Unit) {
+            activity?.getAllContacts {
+                onSuccess.invoke(it)
+            }
         }
     }
 

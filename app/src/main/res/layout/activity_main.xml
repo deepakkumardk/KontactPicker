@@ -7,12 +7,37 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/kontact_picker_btn"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Open KontactPicker"
-        tools:ignore="HardcodedText" />
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/kontact_picker_btn"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBlue500"
+            android:padding="4dp"
+            android:text="Open KontactPicker"
+            android:textColor="@color/colorWhite"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/get_all_kontact_btn"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:background="@color/colorBlue500"
+            android:padding="4dp"
+            android:text="Show All Kontacts"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/title_selected_contacts"
@@ -24,12 +49,21 @@
         android:textStyle="bold"
         tools:text="@string/selected_contacts" />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:progressTint="@color/design_default_color_primary_dark"
+        android:visibility="gone"
+        tools:targetApi="lollipop" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
-        tools:itemCount="4"
+        tools:itemCount="5"
         tools:listitem="@layout/item_contact" />
 
 </LinearLayout>

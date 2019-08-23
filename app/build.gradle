@@ -35,7 +35,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
 
-//    implementation 'com.github.deepakkumardk:KontactPicker:1.0.0-beta'
+//    implementation 'com.github.deepakkumardk:KontactPicker:1.0.1'
     implementation project(':kontactpicker')
 }
 
