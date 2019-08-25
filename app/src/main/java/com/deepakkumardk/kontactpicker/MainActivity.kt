@@ -4,8 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.deepakkumardk.kontactpicker.model.ImageMode
-import com.deepakkumardk.kontactpicker.model.SelectionTickView
+import com.deepakkumardk.kontactpickerlib.KontactPicker
+import com.deepakkumardk.kontactpickerlib.hide
+import com.deepakkumardk.kontactpickerlib.init
+import com.deepakkumardk.kontactpickerlib.model.ImageMode
+import com.deepakkumardk.kontactpickerlib.model.SelectionTickView
+import com.deepakkumardk.kontactpickerlib.show
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**

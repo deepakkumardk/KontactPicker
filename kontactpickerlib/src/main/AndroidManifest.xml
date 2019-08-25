@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.deepakkumardk.kontactpickerlib">
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <application>
+        <activity
+            android:name="com.deepakkumardk.kontactpickerlib.KontactPickerActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+    </application>
+
+</manifest>
