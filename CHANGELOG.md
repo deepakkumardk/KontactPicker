@@ -10,7 +10,7 @@
    - Internally handling the READ_CONTACT permission in the library
 
 
- **1.2.0**
+ **1.1.0**
    - Add method to fetch only contacts from the phone (Will be useful if you want to customize the UI)
    - Fix Duplicate contact issue
    - Search bar UI improvement

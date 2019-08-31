@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import com.deepakkumardk.kontactpickerlib.model.MyContacts
-import com.deepakkumardk.kontactpickerlib.util.getAllContacts
+import com.deepakkumardk.kontactpickerlib.util.*
 import kotlinx.android.synthetic.main.activity_kontact_picker.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.longToast
@@ -34,23 +34,23 @@ class KontactPickerActivity : AppCompatActivity() {
     private var debugMode = false
     private var imageMode = 0
     private var selectionTickView = 0
+    private var textBgColor = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kontact_picker)
 
-        val builder = intent.getParcelableExtra<KontactPicker.Builder>("builder")
-        debugMode = builder.debugMode == 1
-        imageMode = builder.imageMode
-        selectionTickView = builder.selectionTickView
+//        val builder = intent.getParcelableExtra<KontactPicker.Builder>("builder")
+        debugMode = KontactPickerUI.debugMode
+        imageMode = KontactPickerUI.imageMode
+        selectionTickView = KontactPickerUI.selectionTickView
+        textBgColor = KontactPickerUI.textBgColor
 
         logInitialValues()
 
         initToolbar()
         kontactsAdapter =
-            KontactsAdapter(
-                myKontacts, selectionTickView, imageMode
-            ) { contact, position, view ->
+            KontactsAdapter(myKontacts) { contact, position, view ->
                 onItemClick(contact, position, view)
             }
         recycler_view.init(this)

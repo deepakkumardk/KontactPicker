@@ -2,7 +2,6 @@ package com.deepakkumardk.kontactpickerlib.util
 
 import android.app.Activity
 import android.provider.ContactsContract
-import com.deepakkumardk.kontactpickerlib.log
 import com.deepakkumardk.kontactpickerlib.model.MyContacts
 import org.jetbrains.anko.doAsyncResult
 import org.jetbrains.anko.onComplete

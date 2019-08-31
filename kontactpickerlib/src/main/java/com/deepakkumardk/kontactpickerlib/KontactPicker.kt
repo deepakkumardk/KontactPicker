@@ -4,11 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.ColorInt
 import androidx.fragment.app.Fragment
 import com.deepakkumardk.kontactpickerlib.model.ImageMode
 import com.deepakkumardk.kontactpickerlib.model.MyContacts
 import com.deepakkumardk.kontactpickerlib.model.SelectionTickView
+import com.deepakkumardk.kontactpickerlib.util.KontactPickerUI
 import com.deepakkumardk.kontactpickerlib.util.getAllContacts
+import com.deepakkumardk.kontactpickerlib.util.log
 
 /**
  * Created by Deepak Kumar on 25/05/2019
@@ -52,9 +55,10 @@ class KontactPicker {
     class Builder() : Parcelable {
         private var activity: Activity? = null
         private var fragment: Fragment? = null
-        var debugMode = 0
-        var imageMode = 0
-        var selectionTickView = 0
+        private var debugMode = 0
+        private var imageMode = 0
+        private var textBgColor = 0
+        private var selectionTickView = 0
 
         @Suppress("UNUSED_PARAMETER")
         constructor(parcel: Parcel) : this() {
@@ -97,9 +101,15 @@ class KontactPicker {
             return this
         }
 
+        fun setTextBackgroundColor(@ColorInt color: Int): Builder {
+            this.textBgColor = color
+            return this
+        }
+
         fun showPickerForResult(requestCode: Int) {
+            KontactPickerUI.setPickerUI(debugMode == 1, imageMode, selectionTickView, textBgColor)
+
             val intent = Intent(this.activity, KontactPickerActivity::class.java)
-            intent.putExtra("builder", this)
 
             this.activity.let {
                 it?.startActivityForResult(intent, requestCode)
@@ -114,6 +124,7 @@ class KontactPicker {
             dest?.writeInt(debugMode)
             dest?.writeInt(imageMode)
             dest?.writeInt(selectionTickView)
+            dest?.writeInt(textBgColor)
         }
 
         override fun describeContents(): Int {

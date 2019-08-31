@@ -1,4 +1,4 @@
-package com.deepakkumardk.kontactpickerlib
+package com.deepakkumardk.kontactpickerlib.util
 
 import android.content.Context
 import android.graphics.Color
@@ -13,6 +13,7 @@ import java.util.*
  * Extension functions
  * Created by Deepak Kumar on 25/05/2019
  */
+
 fun View?.show() {
     this?.visibility = View.VISIBLE
 }
@@ -37,6 +38,8 @@ fun generateRandomColor(): Int {
 }
 
 fun getTextDrawable(name: String): TextDrawable? {
+    var color = KontactPickerUI.textBgColor
+    if (color == 0) color = generateRandomColor()
     val initials = name[0].toString().toUpperCase(Locale.ENGLISH)
     return TextDrawable.builder()
         .beginConfig()
@@ -44,7 +47,7 @@ fun getTextDrawable(name: String): TextDrawable? {
         .height(1024)
         .bold()
         .endConfig()
-        .buildRound(initials, generateRandomColor())
+        .buildRound(initials, color)
 }
 
 fun log(message: String) = Log.d("TAG_KONTACT_PICKER", message)

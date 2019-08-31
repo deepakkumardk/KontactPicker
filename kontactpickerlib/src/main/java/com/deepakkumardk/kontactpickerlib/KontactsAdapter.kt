@@ -8,6 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.deepakkumardk.kontactpickerlib.model.MyContacts
+import com.deepakkumardk.kontactpickerlib.util.KontactPickerUI
+import com.deepakkumardk.kontactpickerlib.util.getTextDrawable
+import com.deepakkumardk.kontactpickerlib.util.hide
+import com.deepakkumardk.kontactpickerlib.util.show
 import de.hdodenhof.circleimageview.CircleImageView
 import org.jetbrains.anko.find
 
@@ -17,10 +21,16 @@ import org.jetbrains.anko.find
 
 class KontactsAdapter(
     private var contactsList: MutableList<MyContacts>?,
-    private val selectionTickView: Int,
-    private val imageMode: Int,
     private val listener: (MyContacts, Int, View) -> Unit
 ) : RecyclerView.Adapter<KontactsAdapter.KontactViewHolder>() {
+
+    private var selectionTickView = 0
+    private var imageMode = 0
+
+    init {
+        imageMode = KontactPickerUI.imageMode
+        selectionTickView = KontactPickerUI.selectionTickView
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KontactViewHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -39,9 +49,7 @@ class KontactsAdapter(
                 .load(R.drawable.ic_account_circle_white)
                 .into(holder.contactImage)
             1 -> holder.contactImage.setImageDrawable(
-                getTextDrawable(
-                    contact.contactName!!
-                )
+                getTextDrawable(contact.contactName!!)
             )
         }
 

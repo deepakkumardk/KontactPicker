@@ -2,14 +2,15 @@ package com.deepakkumardk.kontactpicker
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.deepakkumardk.kontactpickerlib.KontactPicker
-import com.deepakkumardk.kontactpickerlib.hide
-import com.deepakkumardk.kontactpickerlib.init
 import com.deepakkumardk.kontactpickerlib.model.ImageMode
 import com.deepakkumardk.kontactpickerlib.model.SelectionTickView
-import com.deepakkumardk.kontactpickerlib.show
+import com.deepakkumardk.kontactpickerlib.util.hide
+import com.deepakkumardk.kontactpickerlib.util.init
+import com.deepakkumardk.kontactpickerlib.util.show
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -47,11 +48,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openKontactPicker() {
-        KontactPicker.Builder(this)
-            .setDebugMode(true)
-            .setImageMode(ImageMode.TextMode)
-            .setSelectionTickView(SelectionTickView.LargeView)
-            .showPickerForResult(3000)
+        val color = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            resources.getColor(R.color.colorBlue100,this.theme)
+        } else {
+            resources.getColor(R.color.colorBlue100)
+        }
+
+        KontactPicker.Builder(this).apply {
+            setDebugMode(true)
+            setImageMode(ImageMode.TextMode)
+            setSelectionTickView(SelectionTickView.LargeView)
+            setTextBackgroundColor(color)
+            showPickerForResult(3000)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
