@@ -32,27 +32,19 @@ class KontactPickerActivity : AppCompatActivity() {
     private var selectedKontacts: MutableList<MyContacts> = ArrayList()
     private var kontactsAdapter: KontactsAdapter? = null
     private var debugMode = false
-    private var imageMode = 0
-    private var selectionTickView = 0
-    private var textBgColor = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kontact_picker)
 
-//        val builder = intent.getParcelableExtra<KontactPicker.Builder>("builder")
-        debugMode = KontactPickerUI.debugMode
-        imageMode = KontactPickerUI.imageMode
-        selectionTickView = KontactPickerUI.selectionTickView
-        textBgColor = KontactPickerUI.textBgColor
+        debugMode = KontactPickerUI.getDebugMode()
 
         logInitialValues()
-
         initToolbar()
-        kontactsAdapter =
-            KontactsAdapter(myKontacts) { contact, position, view ->
-                onItemClick(contact, position, view)
-            }
+
+        kontactsAdapter = KontactsAdapter(myKontacts) { contact, _, view ->
+            onItemClick(contact, view)
+        }
         recycler_view.init(this)
         recycler_view.adapter = kontactsAdapter
         checkPermission()
@@ -60,7 +52,7 @@ class KontactPickerActivity : AppCompatActivity() {
         fab_done.setOnClickListener {
             val result = Intent()
             val list = getSelectedKontacts()
-            result.putExtra("extra_selected_contacts", list)
+            result.putExtra(EXTRA_SELECTED_CONTACTS, list)
             setResult(Activity.RESULT_OK, result)
             finish()
         }
@@ -131,8 +123,8 @@ class KontactPickerActivity : AppCompatActivity() {
     private fun logInitialValues() {
         if (debugMode) {
             log("DebugMode: $debugMode")
-            log("SelectionTickVIew: $selectionTickView")
-            log("Image Mode: $imageMode")
+            log("SelectionTickVIew: ${KontactPickerUI.getSelectionTickView()}")
+            log("Image Mode: ${KontactPickerUI.getImageMode()}")
         }
     }
 
@@ -142,8 +134,7 @@ class KontactPickerActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(resources.getDrawable(R.drawable.ic_arrow_back))
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    private fun onItemClick(contact: MyContacts?, position: Int, view: View) {
+    private fun onItemClick(contact: MyContacts?, view: View) {
         contact?.isSelected = !contact?.isSelected!!
         when (contact.isSelected) {
             true -> {

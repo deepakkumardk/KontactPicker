@@ -38,7 +38,7 @@ fun generateRandomColor(): Int {
 }
 
 fun getTextDrawable(name: String): TextDrawable? {
-    var color = KontactPickerUI.textBgColor
+    var color = KontactPickerUI.getTextBgColor()
     if (color == 0) color = generateRandomColor()
     val initials = name[0].toString().toUpperCase(Locale.ENGLISH)
     return TextDrawable.builder()

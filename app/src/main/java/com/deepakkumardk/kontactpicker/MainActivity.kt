@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.deepakkumardk.kontactpickerlib.KontactPicker
 import com.deepakkumardk.kontactpickerlib.model.ImageMode
+import com.deepakkumardk.kontactpickerlib.model.KontactPickerItem
 import com.deepakkumardk.kontactpickerlib.model.SelectionTickView
 import com.deepakkumardk.kontactpickerlib.util.hide
 import com.deepakkumardk.kontactpickerlib.util.init
@@ -49,18 +50,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun openKontactPicker() {
         val color = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            resources.getColor(R.color.colorBlue100,this.theme)
+            resources.getColor(R.color.colorBlue100, this.theme)
         } else {
             resources.getColor(R.color.colorBlue100)
         }
 
-        KontactPicker.Builder(this).apply {
-            setDebugMode(true)
-            setImageMode(ImageMode.TextMode)
-            setSelectionTickView(SelectionTickView.LargeView)
-            setTextBackgroundColor(color)
-            showPickerForResult(3000)
+        val item = KontactPickerItem().apply {
+            debugMode = true
+            textBgColor = color
+            imageMode = ImageMode.TextMode
+            selectionTickView = SelectionTickView.LargeView
         }
+
+        KontactPicker().startPickerForResult(this, item, 3000)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

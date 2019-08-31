@@ -1,15 +1,25 @@
 package com.deepakkumardk.kontactpickerlib.util
 
-object KontactPickerUI {
-    var debugMode = false
-    var imageMode = 0
-    var selectionTickView = 0
-    var textBgColor = 0
+import com.deepakkumardk.kontactpickerlib.model.KontactPickerItem
 
-    fun setPickerUI(debugMode: Boolean, imageMode: Int, selectionTickView: Int, textBgColor: Int) {
-        this.debugMode = debugMode
-        this.imageMode = imageMode
-        this.selectionTickView = selectionTickView
-        this.textBgColor = textBgColor
+/**
+ * Created by Deepak Kumar on 31/08/2019
+ */
+
+object KontactPickerUI {
+    private lateinit var kontactPickerItem: KontactPickerItem
+
+    fun getPickerItem() = kontactPickerItem
+
+    fun setPickerUI(kontactPickerItem: KontactPickerItem) {
+        this.kontactPickerItem = kontactPickerItem
     }
+
+    fun getDebugMode() = kontactPickerItem.debugMode
+
+    fun getImageMode() = kontactPickerItem.imageMode
+
+    fun getSelectionTickView() = kontactPickerItem.selectionTickView
+
+    fun getTextBgColor() = kontactPickerItem.textBgColor
 }

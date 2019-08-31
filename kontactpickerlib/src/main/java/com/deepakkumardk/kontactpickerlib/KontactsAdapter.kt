@@ -7,7 +7,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.deepakkumardk.kontactpickerlib.model.ImageMode
 import com.deepakkumardk.kontactpickerlib.model.MyContacts
+import com.deepakkumardk.kontactpickerlib.model.SelectionTickView
 import com.deepakkumardk.kontactpickerlib.util.KontactPickerUI
 import com.deepakkumardk.kontactpickerlib.util.getTextDrawable
 import com.deepakkumardk.kontactpickerlib.util.hide
@@ -24,13 +26,8 @@ class KontactsAdapter(
     private val listener: (MyContacts, Int, View) -> Unit
 ) : RecyclerView.Adapter<KontactsAdapter.KontactViewHolder>() {
 
-    private var selectionTickView = 0
-    private var imageMode = 0
-
-    init {
-        imageMode = KontactPickerUI.imageMode
-        selectionTickView = KontactPickerUI.selectionTickView
-    }
+    private var imageMode: ImageMode = KontactPickerUI.getImageMode()
+    private var selectionTickView: SelectionTickView = KontactPickerUI.getSelectionTickView()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KontactViewHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -45,33 +42,37 @@ class KontactsAdapter(
             holder.contactMobile.text = contact.contactNumber
 
         when (imageMode) {
-            0 -> Glide.with(holder.itemView.context)
+            ImageMode.None -> Glide.with(holder.itemView.context)
                 .load(R.drawable.ic_account_circle_white)
                 .into(holder.contactImage)
-            1 -> holder.contactImage.setImageDrawable(
+            ImageMode.TextMode -> holder.contactImage.setImageDrawable(
                 getTextDrawable(contact.contactName!!)
             )
         }
 
         holder.itemView.setOnClickListener {
-            if (selectionTickView == 0)
-                listener(contact, holder.adapterPosition, holder.contactTickSmall)
-            else
-                listener(contact, holder.adapterPosition, holder.contactTickLarge)
+            when (selectionTickView) {
+                SelectionTickView.SmallView -> listener(
+                    contact,
+                    holder.adapterPosition,
+                    holder.contactTickSmall
+                )
+                else -> listener(contact, holder.adapterPosition, holder.contactTickLarge)
+            }
         }
 
         when (contact.isSelected) {
             true -> {
-                if (selectionTickView == 0)
-                    holder.contactTickSmall.show()
-                else
-                    holder.contactTickLarge.show()
+                when (selectionTickView) {
+                    SelectionTickView.SmallView -> holder.contactTickSmall.show()
+                    SelectionTickView.LargeView -> holder.contactTickLarge.show()
+                }
             }
             false -> {
-                if (selectionTickView == 0)
-                    holder.contactTickSmall.hide()
-                else
-                    holder.contactTickLarge.hide()
+                when (selectionTickView) {
+                    SelectionTickView.SmallView -> holder.contactTickSmall.hide()
+                    SelectionTickView.LargeView -> holder.contactTickLarge.hide()
+                }
             }
         }
     }
