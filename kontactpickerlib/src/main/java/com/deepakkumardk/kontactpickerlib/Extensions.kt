@@ -7,6 +7,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amulyakhare.textdrawable.TextDrawable
+import java.util.*
 
 /**
  * Extension functions
@@ -36,7 +37,7 @@ fun generateRandomColor(): Int {
 }
 
 fun getTextDrawable(name: String): TextDrawable? {
-    val initials = name[0].toString().capitalize()
+    val initials = name[0].toString().toUpperCase(Locale.ENGLISH)
     return TextDrawable.builder()
         .beginConfig()
         .width(1024)

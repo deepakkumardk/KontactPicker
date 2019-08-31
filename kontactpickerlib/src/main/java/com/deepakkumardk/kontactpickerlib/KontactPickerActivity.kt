@@ -10,7 +10,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -18,10 +17,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import com.deepakkumardk.kontactpickerlib.model.MyContacts
+import com.deepakkumardk.kontactpickerlib.util.getAllContacts
 import kotlinx.android.synthetic.main.activity_kontact_picker.*
-import org.jetbrains.anko.*
-import org.jetbrains.anko.sdk27.coroutines.onClick
-
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.longToast
+import org.jetbrains.anko.yesButton
 
 /**
  * Created by Deepak Kumar on 25/05/2019
@@ -49,9 +49,7 @@ class KontactPickerActivity : AppCompatActivity() {
         initToolbar()
         kontactsAdapter =
             KontactsAdapter(
-                myKontacts,
-                selectionTickView,
-                imageMode
+                myKontacts, selectionTickView, imageMode
             ) { contact, position, view ->
                 onItemClick(contact, position, view)
             }
@@ -59,7 +57,7 @@ class KontactPickerActivity : AppCompatActivity() {
         recycler_view.adapter = kontactsAdapter
         checkPermission()
 
-        fab_done.onClick {
+        fab_done.setOnClickListener {
             val result = Intent()
             val list = getSelectedKontacts()
             result.putExtra("extra_selected_contacts", list)
@@ -230,91 +228,20 @@ class KontactPickerActivity : AppCompatActivity() {
         }
     }
 
-    private fun filterContactsFromMap(contactMap: MutableMap<String, MyContacts>) {
-        myKontacts.clear()
-        val phoneList = arrayListOf<String>()
-        contactMap.entries.forEach {
-            val contact = it.value
-            contact.contactNumberList.forEach { number ->
-                if (!phoneList.contains(number)) {
-                    val newContact = MyContacts(
-                        contact.contactId,
-                        contact.contactName,
-                        number, false,
-                        contact.contactNumberList
-                    )
-                    myKontacts.add(newContact)
-                    phoneList.add(number)
-                }
-            }
-        }
-        myKontacts.sortBy {
-            it.contactName
-        }
-        setSubtitle()
-        kontactsAdapter?.notifyDataSetChanged()
-    }
-
     private fun loadContacts() {
+        myKontacts.clear()
         progress_bar.show()
         val startTime = System.currentTimeMillis()
-        val projection = arrayOf(
-            ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
-            ContactsContract.Contacts.DISPLAY_NAME,
-            ContactsContract.CommonDataKinds.Phone.NUMBER
-        )
-
-        val contactMap = mutableMapOf<String, MyContacts>()
-        val cr = contentResolver
-        doAsyncResult {
-            cr.query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection,
-                null, null, null
-            )?.use {
-                //                val idIndex = it.getColumnIndex(ContactsContract.Contacts._ID)
-                val idIndex = it.getColumnIndex(ContactsContract.Data.CONTACT_ID)
-                val nameIndex = it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
-                val hasPhoneNumberIndex =
-                    it.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)
-                val numberIndex = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
-
-                var id: String
-                var name: String
-                var number: String
-                while (it.moveToNext()) {
-                    val contacts = MyContacts()
-                    id = it.getLong(idIndex).toString()
-                    name = it.getString(nameIndex)
-                    number = it.getString(numberIndex).replace(" ", "")
-
-                    contacts.contactId = id
-                    contacts.contactName = name
-                    contacts.contactNumber = number
-                    contacts.contactNumberList = arrayListOf(number)
-
-                    if (contactMap[id] != null) {
-                        val list = contactMap[id]?.contactNumberList!!
-                        if (!list.contains(number))
-                            list.add(number)
-                        contacts.contactNumberList = list
-                    } else {
-                        contactMap[id] = contacts
-                    }
-                }
-                it.close()
+        getAllContacts {
+            myKontacts.addAll(it)
+            val fetchingTime = System.currentTimeMillis() - startTime
+            if (debugMode) {
+                longToast("Fetching Completed in $fetchingTime ms")
+                log("Fetching Completed in $fetchingTime ms")
             }
-            onComplete {
-                val fetchingTime = System.currentTimeMillis() - startTime
-
-                if (debugMode) {
-                    longToast("Fetching Completed in $fetchingTime ms")
-                    log("Fetching Completed in $fetchingTime ms")
-                }
-                progress_bar.hide()
-                filterContactsFromMap(contactMap)
-            }
-            return@doAsyncResult myKontacts
+            progress_bar.hide()
+            setSubtitle()
+            kontactsAdapter?.notifyDataSetChanged()
         }
     }
-
 }

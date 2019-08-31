@@ -1,7 +1,8 @@
 # KontactPicker
 [![](https://jitpack.io/v/deepakkumardk/KontactPicker.svg)](https://jitpack.io/#deepakkumardk/KontactPicker)
+[![](https://img.shields.io/badge/Android%20Arsenal-KontactPicker-brightgreen)](https://android-arsenal.com/details/1/7836)
 
-A ContactPicker library for Android, written in [Kotlin](http://kotlinlang.org)
+A Contact Picker library for Android, written purely in [Kotlin](http://kotlinlang.org) with Co-routines.
 
 ## Usages
 project/build.gradle
@@ -24,7 +25,7 @@ dependencies {
 
 **NOTE: This library is based on AndroidX artifacts**
 
-No need to specify the **READ_CONTACT** permission in your manifest file, library will handle this permission internally
+**No need** to specify the **READ_CONTACT** permission in your manifest file, library will handle this permission internally.
 
 ```kotlin
     KontactPicker.Builder(this)
@@ -50,7 +51,15 @@ No need to specify the **READ_CONTACT** permission in your manifest file, librar
         }
     }
 ```
+### Fetch Contacts
+If you want to fetch only contacts from Phonebook and don't want to use the default UI from this
+library you can also do it with this method.
 
+```kotlin
+    KontactPicker.getAllKontacts(this) { contactList - >
+        //Handle the contactList : MutableList<MyContacts>
+    }
+```
 
 ## License
 
