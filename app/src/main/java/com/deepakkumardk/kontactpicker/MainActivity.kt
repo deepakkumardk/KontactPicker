@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
+import com.deepakkumardk.kontactpicker.databinding.ActivityMainBinding
 import com.deepakkumardk.kontactpickerlib.KontactPicker
 import com.deepakkumardk.kontactpickerlib.model.ImageMode
 import com.deepakkumardk.kontactpickerlib.model.KontactPickerItem
@@ -22,9 +25,16 @@ class MainActivity : AppCompatActivity() {
     private var myContacts: ArrayList<Contact>? = ArrayList()
     private var contactsAdapter: ContactAdapter? = null
 
+    val debugModeCheck = MutableLiveData<Boolean>()
+    val imageModeCheck = MutableLiveData<Int>()
+    val selectionModeCheck = MutableLiveData<Int>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val binding =
+            DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        binding.activity = this
+        binding.lifecycleOwner = this
 
         contactsAdapter = ContactAdapter(myContacts)
         recycler_view.init(applicationContext)
@@ -56,10 +66,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         val item = KontactPickerItem().apply {
-            debugMode = true
+            debugMode = debugModeCheck.value ?: false
             textBgColor = color
-            imageMode = ImageMode.TextMode
-            selectionTickView = SelectionTickView.LargeView
+            imageMode = when (imageModeCheck.value) {
+                0 -> ImageMode.None
+                1 -> ImageMode.TextMode
+                else -> ImageMode.None
+            }
+            selectionTickView = when (selectionModeCheck.value) {
+                0 -> SelectionTickView.SmallView
+                1 -> SelectionTickView.LargeView
+                else -> SelectionTickView.SmallView
+            }
         }
 
         KontactPicker().startPickerForResult(this, item, 3000)
