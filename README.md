@@ -28,17 +28,18 @@ dependencies {
 **No need** to specify the **READ_CONTACT** permission in your manifest file, library will handle this permission internally.
 
 ```kotlin
-    KontactPicker.Builder(this)
-            .showPickerForResult(3000) //REQUEST_CODE
+    KontactPicker().startPickerForResult(this, KontactPickerItem(), 3000)  //RequestCode
 ```
 
 ### Customization
 ```kotlin
-    KontactPicker.Builder(this)
-            .setDebugMode(true)
-            .setImageMode(ImageMode.TextMode)       //Default is None
-            .setSelectionTickView(SelectionTickView.LargeView)      //Default is SmallView
-            .showPickerForResult(3000) //REQUEST_CODE
+    val item = KontactPickerItem().apply {
+        debugMode = true
+        textBgColor = R.color.colorPrimary                   //Default is Random Color
+        imageMode = ImageMode.TextMode                       //Default is None
+        selectionTickView = SelectionTickView.LargeView      //Default is SmallView
+    }
+    KontactPicker().startPickerForResult(this, item, 3000)
 ```
 
 #### Handing Results

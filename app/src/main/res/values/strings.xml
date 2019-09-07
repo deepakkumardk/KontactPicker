@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">KontactPicker</string>
     <string name="selected_contacts">Selected Contacts</string>
+    <string name="colors">Colors</string>
+    <string name="select">Select</string>
+    <string name="select_none">Select None</string>
 </resources>

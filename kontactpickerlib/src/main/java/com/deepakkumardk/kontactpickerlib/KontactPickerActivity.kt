@@ -124,6 +124,7 @@ class KontactPickerActivity : AppCompatActivity() {
         if (debugMode) {
             log("DebugMode: $debugMode")
             log("SelectionTickVIew: ${KontactPickerUI.getSelectionTickView()}")
+            log("Default Text Color: ${KontactPickerUI.getTextBgColor()}")
             log("Image Mode: ${KontactPickerUI.getImageMode()}")
         }
     }
@@ -223,7 +224,7 @@ class KontactPickerActivity : AppCompatActivity() {
         myKontacts.clear()
         progress_bar.show()
         val startTime = System.currentTimeMillis()
-        getAllContacts {
+        KontactEx().getAllContacts(this) {
             myKontacts.addAll(it)
             val fetchingTime = System.currentTimeMillis() - startTime
             if (debugMode) {

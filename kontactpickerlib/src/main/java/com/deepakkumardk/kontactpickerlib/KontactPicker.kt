@@ -2,11 +2,12 @@ package com.deepakkumardk.kontactpickerlib
 
 import android.app.Activity
 import android.content.Intent
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.deepakkumardk.kontactpickerlib.model.KontactPickerItem
 import com.deepakkumardk.kontactpickerlib.model.MyContacts
+import com.deepakkumardk.kontactpickerlib.util.KontactEx
 import com.deepakkumardk.kontactpickerlib.util.KontactPickerUI
-import com.deepakkumardk.kontactpickerlib.util.getAllContacts
 
 /**
  * Created by Deepak Kumar on 25/05/2019
@@ -15,6 +16,8 @@ import com.deepakkumardk.kontactpickerlib.util.getAllContacts
 class KontactPicker {
 
     fun startPickerForResult(activity: Activity?, item: KontactPickerItem, requestCode: Int) {
+        item.textBgColor =
+            activity?.applicationContext.let { ContextCompat.getColor(it!!, item.textBgColor) }
         KontactPickerUI.setPickerUI(item)
         val intent = Intent(activity, KontactPickerActivity::class.java)
         activity.let {
@@ -23,6 +26,13 @@ class KontactPicker {
     }
 
     fun startPickerForResult(fragment: Fragment?, item: KontactPickerItem, requestCode: Int) {
+        item.textBgColor =
+            fragment?.context.let {
+                ContextCompat.getColor(
+                    it!!,
+                    item.textBgColor
+                )
+            }
         KontactPickerUI.setPickerUI(item)
         val intent = Intent(fragment?.context, KontactPickerActivity::class.java)
         fragment.let {
@@ -57,7 +67,7 @@ class KontactPicker {
          * Get All contacts with name and phone number
          */
         fun getAllKontacts(activity: Activity?, onSuccess: (MutableList<MyContacts>) -> Unit) {
-            activity?.getAllContacts {
+            KontactEx().getAllContacts(activity) {
                 onSuccess.invoke(it)
             }
         }

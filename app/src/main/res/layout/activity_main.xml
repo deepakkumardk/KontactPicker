@@ -79,6 +79,17 @@
                 android:checked="@={activity.debugModeCheck}"
                 android:text="Debug Mode"
                 tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/btn_color_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:padding="0dp"
+                android:layout_marginLeft="16dp"
+                android:text="Color"
+                android:textAllCaps="false"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
 
         <LinearLayout
