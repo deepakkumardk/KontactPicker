@@ -7,7 +7,7 @@
     <application>
         <activity
             android:name="com.deepakkumardk.kontactpickerlib.KontactPickerActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />

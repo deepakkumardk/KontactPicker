@@ -15,3 +15,9 @@
    - Fix Duplicate contact issue
    - Search bar UI improvement
 
+ **1.2.0**
+   - Add support for Default Background Color for TextMode
+   - Update Readme and Sample app
+
+ **1.3.0**
+   - Add support for custom theme

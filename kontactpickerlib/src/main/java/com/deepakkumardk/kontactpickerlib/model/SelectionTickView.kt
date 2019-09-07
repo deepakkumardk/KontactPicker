@@ -5,6 +5,6 @@ package com.deepakkumardk.kontactpickerlib.model
  */
 
 sealed class SelectionTickView {
-    object SmallView : SelectionTickView()  //0
-    object LargeView : SelectionTickView()  //1
+    object SmallView : SelectionTickView()
+    object LargeView : SelectionTickView()
 }

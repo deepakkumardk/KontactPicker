@@ -1,5 +1,6 @@
 package com.deepakkumardk.kontactpickerlib.util
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.util.Log
@@ -39,7 +40,7 @@ fun generateRandomColor(): Int {
 
 fun getTextDrawable(name: String): TextDrawable? {
     var color = KontactPickerUI.getTextBgColor()
-    if (color == 0) color = generateRandomColor()
+    if (color == null) color = generateRandomColor()
     val initials = name[0].toString().toUpperCase(Locale.ENGLISH)
     return TextDrawable.builder()
         .beginConfig()
@@ -48,6 +49,12 @@ fun getTextDrawable(name: String): TextDrawable? {
         .bold()
         .endConfig()
         .buildRound(initials, color)
+}
+
+fun Activity?.applyCustomTheme(themeId: Int?) {
+    themeId?.let {
+        this?.setTheme(themeId)
+    }
 }
 
 fun log(message: String) = Log.d("TAG_KONTACT_PICKER", message)

@@ -17,6 +17,8 @@ object KontactPickerUI {
 
     fun getDebugMode() = kontactPickerItem.debugMode
 
+    fun getTheme() = kontactPickerItem.themeResId
+
     fun getImageMode() = kontactPickerItem.imageMode
 
     fun getSelectionTickView() = kontactPickerItem.selectionTickView

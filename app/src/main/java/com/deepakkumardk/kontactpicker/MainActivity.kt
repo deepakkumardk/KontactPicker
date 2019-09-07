@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
@@ -70,6 +71,8 @@ class MainActivity : AppCompatActivity() {
             colorDefault?.let {
                 textBgColor = it
             }
+            themeResId = R.style.CustomTheme
+            textBgColor = ContextCompat.getColor(this@MainActivity, R.color.colorBlue100)
             imageMode = when (imageModeCheck.value) {
                 0 -> ImageMode.None
                 1 -> ImageMode.TextMode
@@ -92,7 +95,6 @@ class MainActivity : AppCompatActivity() {
                 colorDefault = color
                 log("color: $color")
                 binding.btnColorPicker.background = color.toDrawable()
-
             }
             positiveButton(R.string.select)
             negativeButton(R.string.select_none) {

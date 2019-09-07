@@ -2,7 +2,7 @@
 [![](https://jitpack.io/v/deepakkumardk/KontactPicker.svg)](https://jitpack.io/#deepakkumardk/KontactPicker)
 [![](https://img.shields.io/badge/Android%20Arsenal-KontactPicker-brightgreen)](https://android-arsenal.com/details/1/7836)
 
-A Contact Picker library for Android, written purely in [Kotlin](http://kotlinlang.org) with Co-routines.
+An **Easy and fast** Contact Picker library for Android, written purely in [Kotlin](http://kotlinlang.org) with Co-routines.
 
 ## Usages
 project/build.gradle
@@ -35,9 +35,10 @@ dependencies {
 ```kotlin
     val item = KontactPickerItem().apply {
         debugMode = true
-        textBgColor = R.color.colorPrimary                   //Default is Random Color
+        themeResId = R.style.CustomTheme
         imageMode = ImageMode.TextMode                       //Default is None
         selectionTickView = SelectionTickView.LargeView      //Default is SmallView
+        textBgColor = ContextCompat.getColor(this@MainActivity, R.color.colorPrimary)  //Default is Random Color
     }
     KontactPicker().startPickerForResult(this, item, 3000)
 ```

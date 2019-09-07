@@ -10,12 +10,14 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import com.deepakkumardk.kontactpickerlib.model.MyContacts
 import com.deepakkumardk.kontactpickerlib.util.*
 import kotlinx.android.synthetic.main.activity_kontact_picker.*
@@ -35,11 +37,13 @@ class KontactPickerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        applyCustomTheme(KontactPickerUI.getTheme())
         setContentView(R.layout.activity_kontact_picker)
 
         debugMode = KontactPickerUI.getDebugMode()
 
         logInitialValues()
+
         initToolbar()
 
         kontactsAdapter = KontactsAdapter(myKontacts) { contact, _, view ->
@@ -93,7 +97,10 @@ class KontactPickerActivity : AppCompatActivity() {
 
                 override fun onMenuItemActionCollapse(menuItem: MenuItem): Boolean {
                     kontactsAdapter?.updateList(myKontacts)
-                    supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.color.colorPrimary))
+                    val typedValue = TypedValue()
+                    theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+                    val color = typedValue.data
+                    supportActionBar?.setBackgroundDrawable(color.toDrawable())
                     return true
                 }
             })
@@ -104,9 +111,7 @@ class KontactPickerActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> finish()
-            R.id.action_search -> log(
-                "Search"
-            )
+            R.id.action_search -> log("Search")
             else -> super.onOptionsItemSelected(item)
         }
         return super.onOptionsItemSelected(item)
@@ -114,7 +119,7 @@ class KontactPickerActivity : AppCompatActivity() {
 
     private fun animateToolbar() {
         val backgroundColorAnimator = ObjectAnimator.ofObject(
-            toolbar, "backgroundColor", ArgbEvaluator(), 0x008577, 0xffffff
+            supportActionBar, "backgroundColor", ArgbEvaluator(), 0x008577, 0xffffff
         )
         backgroundColorAnimator.duration = 200
         backgroundColorAnimator.start()
@@ -130,7 +135,6 @@ class KontactPickerActivity : AppCompatActivity() {
     }
 
     private fun initToolbar() {
-        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(resources.getDrawable(R.drawable.ic_arrow_back))
     }
