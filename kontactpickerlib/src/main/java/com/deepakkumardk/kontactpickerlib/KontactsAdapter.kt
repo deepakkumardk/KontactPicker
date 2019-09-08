@@ -10,10 +10,7 @@ import com.bumptech.glide.Glide
 import com.deepakkumardk.kontactpickerlib.model.ImageMode
 import com.deepakkumardk.kontactpickerlib.model.MyContacts
 import com.deepakkumardk.kontactpickerlib.model.SelectionTickView
-import com.deepakkumardk.kontactpickerlib.util.KontactPickerUI
-import com.deepakkumardk.kontactpickerlib.util.getTextDrawable
-import com.deepakkumardk.kontactpickerlib.util.hide
-import com.deepakkumardk.kontactpickerlib.util.show
+import com.deepakkumardk.kontactpickerlib.util.*
 import de.hdodenhof.circleimageview.CircleImageView
 import org.jetbrains.anko.find
 
@@ -42,12 +39,25 @@ class KontactsAdapter(
             holder.contactMobile.text = contact.contactNumber
 
         when (imageMode) {
-            ImageMode.None -> Glide.with(holder.itemView.context)
-                .load(R.drawable.ic_account_circle_white)
-                .into(holder.contactImage)
-            ImageMode.TextMode -> holder.contactImage.setImageDrawable(
-                getTextDrawable(contact.contactName!!)
-            )
+            ImageMode.None -> {
+                Glide.with(holder.itemView.context)
+                    .load(R.drawable.ic_account_circle_white)
+                    .into(holder.contactImage)
+            }
+            ImageMode.TextMode -> {
+
+                holder.contactImage.setImageDrawable(
+                    getTextDrawable(contact.contactName!!)
+                )
+            }
+            ImageMode.UserImageMode -> {
+                Glide.with(holder.itemView.context)
+                    .load(getContactImageUri(contact.contactId?.toLong()!!))
+                    .placeholder(R.drawable.ic_account_circle_white)
+                    .fallback(R.drawable.ic_account_circle_white)
+                    .error(R.drawable.ic_account_circle_white)
+                    .into(holder.contactImage)
+            }
         }
 
         holder.itemView.setOnClickListener {

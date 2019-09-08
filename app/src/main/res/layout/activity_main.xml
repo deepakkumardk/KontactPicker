@@ -39,6 +39,14 @@
                 android:layout_marginLeft="8dp"
                 android:text="TextMode"
                 tools:ignore="HardcodedText" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text="UserImageMode"
+                tools:ignore="HardcodedText" />
         </RadioGroup>
 
         <RadioGroup
@@ -85,8 +93,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:padding="0dp"
                 android:layout_marginLeft="16dp"
+                android:padding="0dp"
                 android:text="Color"
                 android:textAllCaps="false"
                 tools:ignore="HardcodedText" />

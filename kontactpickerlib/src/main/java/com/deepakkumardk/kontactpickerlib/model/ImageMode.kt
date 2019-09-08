@@ -5,7 +5,7 @@ package com.deepakkumardk.kontactpickerlib.model
  */
 
 sealed class ImageMode {
-    object None : ImageMode() // default mode
+    object None : ImageMode()       // default mode
     object TextMode : ImageMode()
-//    object UserImageMode : ImageMode()
+    object UserImageMode : ImageMode()
 }

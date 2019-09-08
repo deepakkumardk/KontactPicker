@@ -12,8 +12,8 @@
     <style name="CustomTheme">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#03A9F4</item>
-        <item name="colorPrimaryDark">#EE665C</item>
-        <item name="colorAccent">#FFC107</item>
+        <item name="colorPrimaryDark">#2E718F</item>
+        <item name="colorAccent">#F13F06</item>
     </style>
 
 </resources>

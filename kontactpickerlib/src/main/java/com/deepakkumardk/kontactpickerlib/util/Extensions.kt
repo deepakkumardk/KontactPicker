@@ -1,8 +1,11 @@
 package com.deepakkumardk.kontactpickerlib.util
 
 import android.app.Activity
+import android.content.ContentUris
 import android.content.Context
 import android.graphics.Color
+import android.net.Uri
+import android.provider.ContactsContract
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,6 +52,14 @@ fun getTextDrawable(name: String): TextDrawable? {
         .bold()
         .endConfig()
         .buildRound(initials, color)
+}
+
+fun getContactImageUri(contactId: Long): Uri? {
+    val person = ContentUris.withAppendedId(
+        ContactsContract.Contacts.CONTENT_URI, contactId
+    )
+    return Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY)
+
 }
 
 fun Activity?.applyCustomTheme(themeId: Int?) {

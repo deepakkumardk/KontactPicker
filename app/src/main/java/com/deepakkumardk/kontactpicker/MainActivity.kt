@@ -72,10 +72,11 @@ class MainActivity : AppCompatActivity() {
                 textBgColor = it
             }
             themeResId = R.style.CustomTheme
-            textBgColor = ContextCompat.getColor(this@MainActivity, R.color.colorBlue100)
+//            textBgColor = ContextCompat.getColor(this@MainActivity, R.color.colorBlue100)
             imageMode = when (imageModeCheck.value) {
                 0 -> ImageMode.None
                 1 -> ImageMode.TextMode
+                2 -> ImageMode.UserImageMode
                 else -> ImageMode.None
             }
             selectionTickView = when (selectionModeCheck.value) {
