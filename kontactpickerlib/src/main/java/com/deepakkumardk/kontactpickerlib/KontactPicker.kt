@@ -61,6 +61,22 @@ class KontactPicker {
                 onSuccess.invoke(it)
             }
         }
+
+        /**
+         * Get All contacts with name, phone number and photoUri
+         */
+        fun getAllKontactsWithUri(
+            activity: Activity?,
+            onSuccess: (MutableList<MyContacts>) -> Unit
+        ) {
+            val item = KontactPickerItem().apply {
+                includePhotoUri = true
+            }
+            KontactPickerUI.setPickerUI(item)
+            KontactEx().getAllContacts(activity) {
+                onSuccess.invoke(it)
+            }
+        }
     }
 
 }

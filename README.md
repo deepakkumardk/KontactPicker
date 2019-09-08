@@ -2,7 +2,13 @@
 [![](https://jitpack.io/v/deepakkumardk/KontactPicker.svg)](https://jitpack.io/#deepakkumardk/KontactPicker)
 [![](https://img.shields.io/badge/Android%20Arsenal-KontactPicker-brightgreen)](https://android-arsenal.com/details/1/7836)
 
-An **Easy and fast** Contact Picker library for Android, written purely in [Kotlin](http://kotlinlang.org) with Co-routines.
+An Contact Picker library for Android, written purely in [Kotlin](http://kotlinlang.org) with Co-routines. KontactPicker is:
+
+ - **Fast**: KontactPicker is very fast, gives you the contact list by querying the Content Providers in a optimized way.
+ - **Customizable**: You can customize the UI of this library as you want including theme, SelectionView, ImageMode etc.
+ - **Modern**: It's a Kotlin first and uses the Co-routines library with AndroidX artifacts.
+
+
 
 ## Usages
 project/build.gradle
@@ -31,16 +37,20 @@ dependencies {
     KontactPicker().startPickerForResult(this, KontactPickerItem(), 3000)  //RequestCode
 ```
 
+If you want to start this library from a fragment just pass the fragment context in the above method.
+
+
 ### Customization
 ```kotlin
     val item = KontactPickerItem().apply {
         debugMode = true
-        themeResId = R.style.CustomTheme
-        imageMode = ImageMode.TextMode                       //Default is None
-        selectionTickView = SelectionTickView.LargeView      //Default is SmallView
+        includePhotoUri = true          //Default is false, If you want to include Uri in the result list
+        imageMode = ImageMode.TextMode                      //Default is None
+        themeResId = R.style.CustomTheme                    //Default is Dark Theme
+        selectionTickView = SelectionTickView.LargeView     //Default is SmallView
         textBgColor = ContextCompat.getColor(this@MainActivity, R.color.colorPrimary)  //Default is Random Color
     }
-    KontactPicker().startPickerForResult(this, item, 3000)
+    KontactPicker().startPickerForResult(this, item, 3000)  //RequestCode
 ```
 
 #### Handing Results
@@ -59,6 +69,15 @@ library you can also do it with this method.
 
 ```kotlin
     KontactPicker.getAllKontacts(this) { contactList - >
+        //Handle the contactList : MutableList<MyContacts>
+    }
+```
+
+Above method doesn't give the contact photo Uri, So, if you want that too use the below method,
+which is also as fast as the above.
+
+```kotlin
+    KontactPicker.getAllKontactsWithUri(this) { contactList - >
         //Handle the contactList : MutableList<MyContacts>
     }
 ```

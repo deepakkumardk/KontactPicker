@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
@@ -52,15 +51,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showAllKontacts() {
+        val startTime = System.currentTimeMillis()
         progress_bar.show()
         myContacts?.clear()
         contactsAdapter?.updateList(myContacts)
-        KontactPicker.getAllKontacts(this) {
+        KontactPicker.getAllKontactsWithUri(this) {
             progress_bar.hide()
             for (contact in it) {
-                myContacts?.add(Contact(contact.contactName, contact.contactNumber))
+                myContacts?.add(
+                    Contact(contact.contactName, contact.contactNumber, contact.photoUri)
+                )
             }
             contactsAdapter?.updateList(myContacts)
+
+            val fetchingTime = System.currentTimeMillis() - startTime
+            log("Fetching Completed in $fetchingTime ms")
         }
     }
 
@@ -68,11 +73,12 @@ class MainActivity : AppCompatActivity() {
 
         val item = KontactPickerItem().apply {
             debugMode = debugModeCheck.value ?: false
+            //            textBgColor = ContextCompat.getColor(this@MainActivity, R.color.colorBlue100)
             colorDefault?.let {
                 textBgColor = it
             }
+            includePhotoUri = true
             themeResId = R.style.CustomTheme
-//            textBgColor = ContextCompat.getColor(this@MainActivity, R.color.colorBlue100)
             imageMode = when (imageModeCheck.value) {
                 0 -> ImageMode.None
                 1 -> ImageMode.TextMode
@@ -115,7 +121,13 @@ class MainActivity : AppCompatActivity() {
             myContacts = arrayListOf()
             if (list != null) {
                 for (contact in list) {
-                    myContacts?.add(Contact(contact.contactName, contact.contactNumber))
+                    myContacts?.add(
+                        Contact(
+                            contact.contactName,
+                            contact.contactNumber,
+                            contact.photoUri
+                        )
+                    )
                 }
             }
             contactsAdapter?.updateList(myContacts)

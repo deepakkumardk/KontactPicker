@@ -21,3 +21,6 @@
 
  **1.3.0**
    - Add support for custom theme
+   - Add support for UserImage mode (Very fast)
+   - Bugfix for default color in TextMode
+   - Update Readme and Sample app

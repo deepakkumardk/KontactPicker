@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
 
 /**
@@ -24,6 +25,13 @@ class ContactAdapter(private var contactsList: ArrayList<Contact>?) :
         val contact = contactsList!![position] as Contact?
         holder.contactName.text = contact?.contactName
         holder.contactMobile.text = contact?.contactNumber
+
+        Glide.with(holder.itemView.context)
+            .load(contact?.contactUri)
+            .placeholder(R.drawable.ic_account_circle_white)
+            .fallback(R.drawable.ic_account_circle_white)
+            .error(R.drawable.ic_account_circle_white)
+            .into(holder.contactImage)
     }
 
     override fun getItemCount(): Int = contactsList?.size!!

@@ -1,6 +1,7 @@
 package com.deepakkumardk.kontactpickerlib.util
 
 import android.app.Activity
+import android.net.Uri
 import android.provider.ContactsContract
 import com.deepakkumardk.kontactpickerlib.model.MyContacts
 import org.jetbrains.anko.doAsyncResult
@@ -70,12 +71,18 @@ class KontactEx {
         val phoneList = arrayListOf<String>()
         contactMap.entries.forEach {
             val contact = it.value
+
+            val isUriEnable = KontactPickerUI.getPickerItem().includePhotoUri
+            var photoUri: Uri? = null
+            if (isUriEnable)
+                photoUri = getContactImageUri(contact.contactId?.toLong()!!)
+
             contact.contactNumberList.forEach { number ->
                 if (!phoneList.contains(number)) {
                     val newContact = MyContacts(
                         contact.contactId,
                         contact.contactName,
-                        number, false,
+                        number, false, photoUri,
                         contact.contactNumberList
                     )
                     myKontacts.add(newContact)

@@ -1,5 +1,6 @@
 package com.deepakkumardk.kontactpickerlib.model
 
+import android.net.Uri
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
@@ -13,5 +14,6 @@ data class MyContacts(
     var contactName: String? = null,
     var contactNumber: String? = null,
     var isSelected: Boolean = false,
+    var photoUri: Uri? = null,
     var contactNumberList: ArrayList<String> = arrayListOf()
 ) : Parcelable

@@ -6,8 +6,9 @@ package com.deepakkumardk.kontactpickerlib.model
 
 class KontactPickerItem {
     var debugMode = false
-    var textBgColor: Int? = null
     var themeResId: Int? = null
+    var textBgColor: Int? = null
+    var includePhotoUri = false
     var imageMode: ImageMode = ImageMode.None
     var selectionTickView: SelectionTickView = SelectionTickView.SmallView
 }
