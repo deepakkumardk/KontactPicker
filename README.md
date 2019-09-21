@@ -9,6 +9,8 @@ An Contact Picker library for Android, written purely in [Kotlin](http://kotlinl
  - **Modern**: It's a Kotlin first and uses the Co-routines library with AndroidX artifacts.
 
 
+<img src="screenshots/KontactPickerDemo.gif" alt="Demo Sender" align="center" width="40%" hspace="20" title="Sender" />
+
 
 ## Usages
 project/build.gradle
