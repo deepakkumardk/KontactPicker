@@ -12,7 +12,6 @@ import com.deepakkumardk.kontactpickerlib.model.MyContacts
 import com.deepakkumardk.kontactpickerlib.model.SelectionTickView
 import com.deepakkumardk.kontactpickerlib.util.*
 import de.hdodenhof.circleimageview.CircleImageView
-import org.jetbrains.anko.find
 
 /**
  * Created by Deepak Kumar on 25/05/2019
@@ -95,11 +94,11 @@ class KontactsAdapter(
     }
 
     class KontactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val contactName = view.find<TextView>(R.id.contact_name)
-        val contactMobile = view.find<TextView>(R.id.contact_mobile)
-        val contactImage = view.find<CircleImageView>(R.id.contact_image)
-        val contactTickSmall = view.find<CircleImageView>(R.id.contact_tick_small)
-        val contactTickLarge = view.find<ImageView>(R.id.contact_tick_large)
+        val contactName: TextView = view.findViewById(R.id.contact_name)
+        val contactMobile: TextView = view.findViewById(R.id.contact_mobile)
+        val contactImage: CircleImageView = view.findViewById(R.id.contact_image)
+        val contactTickSmall: CircleImageView = view.findViewById(R.id.contact_tick_small)
+        val contactTickLarge: ImageView = view.findViewById(R.id.contact_tick_large)
     }
 
 }
