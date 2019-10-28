@@ -19,7 +19,6 @@ import com.deepakkumardk.kontactpickerlib.util.hide
 import com.deepakkumardk.kontactpickerlib.util.init
 import com.deepakkumardk.kontactpickerlib.util.log
 import com.deepakkumardk.kontactpickerlib.util.show
-import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  * Created by Deepak Kumar on 25/05/2019
@@ -42,21 +41,21 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         contactsAdapter = ContactAdapter(myContacts)
-        recycler_view.init(applicationContext)
-        recycler_view.adapter = contactsAdapter
+        binding.recyclerView.init(applicationContext)
+        binding.recyclerView.adapter = contactsAdapter
 
-        kontact_picker_btn.setOnClickListener { openKontactPicker() }
-        get_all_kontact_btn.setOnClickListener { showAllKontacts() }
-        btn_color_picker.setOnClickListener { openColorPicker() }
+        binding.kontactPickerBtn.setOnClickListener { openKontactPicker() }
+        binding.getAllKontactBtn.setOnClickListener { showAllKontacts() }
+        binding.btnColorPicker.setOnClickListener { openColorPicker() }
     }
 
     private fun showAllKontacts() {
         val startTime = System.currentTimeMillis()
-        progress_bar.show()
+        binding.progressBar.show()
         myContacts?.clear()
         contactsAdapter?.updateList(myContacts)
-        KontactPicker.getAllKontactsWithUri(this) {
-            progress_bar.hide()
+        KontactPicker.getAllKontactsWithUri(this, true) {
+            binding.progressBar.hide()
             for (contact in it) {
                 myContacts?.add(
                     Contact(contact.contactName, contact.contactNumber, contact.photoUri)
@@ -70,7 +69,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openKontactPicker() {
-
         val item = KontactPickerItem().apply {
             debugMode = debugModeCheck.value ?: false
             //            textBgColor = ContextCompat.getColor(this@MainActivity, R.color.colorBlue100)
@@ -117,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == 3000) {
             val list = KontactPicker.getSelectedKontacts(data)
-            title_selected_contacts.setText(R.string.selected_contacts)
+            binding.titleSelectedContacts.setText(R.string.selected_contacts)
             myContacts = arrayListOf()
             if (list != null) {
                 for (contact in list) {

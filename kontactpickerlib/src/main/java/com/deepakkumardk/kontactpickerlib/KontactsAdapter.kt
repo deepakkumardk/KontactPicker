@@ -16,7 +16,6 @@ import de.hdodenhof.circleimageview.CircleImageView
 /**
  * Created by Deepak Kumar on 25/05/2019
  */
-
 class KontactsAdapter(
     private var contactsList: MutableList<MyContacts>?,
     private val listener: (MyContacts, Int, View) -> Unit
@@ -32,7 +31,7 @@ class KontactsAdapter(
     }
 
     override fun onBindViewHolder(holder: KontactViewHolder, position: Int) {
-        val contact = contactsList!![position] as MyContacts?
+        val contact = contactsList?.get(position)
         holder.contactName.text = contact?.contactName
         if (contact?.contactNumber?.isNotEmpty()!!)
             holder.contactMobile.text = contact.contactNumber

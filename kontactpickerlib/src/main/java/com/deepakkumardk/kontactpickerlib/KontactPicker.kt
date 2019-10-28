@@ -67,10 +67,12 @@ class KontactPicker {
          */
         fun getAllKontactsWithUri(
             activity: Activity?,
+            getLargeUri: Boolean = false,
             onSuccess: (MutableList<MyContacts>) -> Unit
         ) {
             val item = KontactPickerItem().apply {
                 includePhotoUri = true
+                getLargePhotoUri = getLargeUri
             }
             KontactPickerUI.setPickerUI(item)
             KontactEx().getAllContacts(activity) {

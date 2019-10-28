@@ -14,13 +14,15 @@ import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
+import androidx.recyclerview.widget.RecyclerView
 import com.deepakkumardk.kontactpickerlib.model.MyContacts
 import com.deepakkumardk.kontactpickerlib.util.*
-import kotlinx.android.synthetic.main.activity_kontact_picker.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.yesButton
@@ -35,6 +37,10 @@ class KontactPickerActivity : AppCompatActivity() {
     private var kontactsAdapter: KontactsAdapter? = null
     private var debugMode = false
 
+    private lateinit var fabDone :FloatingActionButton
+    private lateinit var recyclerView :RecyclerView
+    private lateinit var progressBar :ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         applyCustomTheme(KontactPickerUI.getTheme())
@@ -43,17 +49,18 @@ class KontactPickerActivity : AppCompatActivity() {
         debugMode = KontactPickerUI.getDebugMode()
 
         logInitialValues()
+        initView()
 
         initToolbar()
 
         kontactsAdapter = KontactsAdapter(myKontacts) { contact, _, view ->
             onItemClick(contact, view)
         }
-        recycler_view.init(this)
-        recycler_view.adapter = kontactsAdapter
+        recyclerView.init(this)
+        recyclerView.adapter = kontactsAdapter
         checkPermission()
 
-        fab_done.setOnClickListener {
+        fabDone.setOnClickListener {
             val result = Intent()
             val list = getSelectedKontacts()
             result.putExtra(EXTRA_SELECTED_CONTACTS, list)
@@ -224,9 +231,15 @@ class KontactPickerActivity : AppCompatActivity() {
         }
     }
 
+    private fun initView() {
+        recyclerView = findViewById(R.id.recycler_view)
+        progressBar = findViewById(R.id.progress_bar)
+        fabDone = findViewById(R.id.fab_done)
+    }
+
     private fun loadContacts() {
         myKontacts.clear()
-        progress_bar.show()
+        progressBar.show()
         val startTime = System.currentTimeMillis()
         KontactEx().getAllContacts(this) {
             myKontacts.addAll(it)
@@ -235,7 +248,7 @@ class KontactPickerActivity : AppCompatActivity() {
                 longToast("Fetching Completed in $fetchingTime ms")
                 log("Fetching Completed in $fetchingTime ms")
             }
-            progress_bar.hide()
+            progressBar.hide()
             setSubtitle()
             kontactsAdapter?.notifyDataSetChanged()
         }

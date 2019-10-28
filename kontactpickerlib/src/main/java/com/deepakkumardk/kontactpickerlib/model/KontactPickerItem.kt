@@ -9,6 +9,7 @@ class KontactPickerItem {
     var themeResId: Int? = null
     var textBgColor: Int? = null
     var includePhotoUri = false
+    var getLargePhotoUri = false
     var imageMode: ImageMode = ImageMode.None
     var selectionTickView: SelectionTickView = SelectionTickView.SmallView
 }
