@@ -43,18 +43,12 @@ class KontactsAdapter(
                     .into(holder.contactImage)
             }
             ImageMode.TextMode -> {
-
                 holder.contactImage.setImageDrawable(
                     getTextDrawable(contact.contactName!!)
                 )
             }
             ImageMode.UserImageMode -> {
-                Glide.with(holder.itemView.context)
-                    .load(getContactImageUri(contact.contactId?.toLong()!!))
-                    .placeholder(R.drawable.ic_account_circle_white)
-                    .fallback(R.drawable.ic_account_circle_white)
-                    .error(R.drawable.ic_account_circle_white)
-                    .into(holder.contactImage)
+                holder.contactImage.loadImage(contact.contactId)
             }
         }
 
@@ -90,6 +84,15 @@ class KontactsAdapter(
     fun updateList(list: MutableList<MyContacts>) {
         this.contactsList = list
         notifyDataSetChanged()
+    }
+
+    private fun CircleImageView.loadImage(contactId: String?) {
+        Glide.with(this.context)
+            .load(getContactImageUri(contactId?.toLong()!!))
+            .placeholder(R.drawable.ic_account_circle_white)
+            .fallback(R.drawable.ic_account_circle_white)
+            .error(R.drawable.ic_account_circle_white)
+            .into(this)
     }
 
     class KontactViewHolder(view: View) : RecyclerView.ViewHolder(view) {

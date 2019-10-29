@@ -37,9 +37,9 @@ class KontactPickerActivity : AppCompatActivity() {
     private var kontactsAdapter: KontactsAdapter? = null
     private var debugMode = false
 
-    private lateinit var fabDone :FloatingActionButton
-    private lateinit var recyclerView :RecyclerView
-    private lateinit var progressBar :ProgressBar
+    private lateinit var fabDone: FloatingActionButton
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -190,18 +190,13 @@ class KontactPickerActivity : AppCompatActivity() {
         val contactReadPermission = ContextCompat.checkSelfPermission(
             this, Manifest.permission.READ_CONTACTS
         ) == PackageManager.PERMISSION_GRANTED
-        when {
-            contactReadPermission -> {
-                loadContacts()
-            }
-            else -> when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
-                    requestPermissions(
-                        arrayOf(Manifest.permission.READ_CONTACTS),
-                        RC_READ_CONTACTS
-                    )
-                }
-            }
+        if (contactReadPermission) {
+            loadContacts()
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(
+                arrayOf(Manifest.permission.READ_CONTACTS),
+                RC_READ_CONTACTS
+            )
         }
     }
 
@@ -211,22 +206,16 @@ class KontactPickerActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            RC_READ_CONTACTS -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the contacts-related task you need to do.
-                    loadContacts()
-                } else {
-                    // permission denied, boo! Disable the functionality that depends on this permission.
-                    alert(
-                        title = "Permission Request",
-                        message = "Please allow us to show contacts."
-                    ) {
-                        yesButton { checkPermission() }
-                    }.show()
-                }
-                return
-
+        if (requestCode == RC_READ_CONTACTS) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                loadContacts()
+            } else {
+                alert(
+                    "Please allow us to show contacts.",
+                    "Permission Request"
+                ) {
+                    yesButton { checkPermission() }
+                }.show()
             }
         }
     }
