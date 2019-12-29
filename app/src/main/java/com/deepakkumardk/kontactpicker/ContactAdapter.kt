@@ -12,7 +12,7 @@ import de.hdodenhof.circleimageview.CircleImageView
  * Created by Deepak Kumar on 25/05/2019
  */
 
-class ContactAdapter(private var contactsList: ArrayList<Contact>?) :
+class ContactAdapter(private var contactsList: ArrayList<Contact>) :
     RecyclerView.Adapter<ContactAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -22,29 +22,32 @@ class ContactAdapter(private var contactsList: ArrayList<Contact>?) :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val contact = contactsList!![position] as Contact?
-        holder.contactName.text = contact?.contactName
-        holder.contactMobile.text = contact?.contactNumber
-
-        Glide.with(holder.itemView.context)
-            .load(contact?.contactUri)
-            .placeholder(R.drawable.ic_account_circle_white)
-            .fallback(R.drawable.ic_account_circle_white)
-            .error(R.drawable.ic_account_circle_white)
-            .into(holder.contactImage)
+        holder.bind(contactsList[position])
     }
 
-    override fun getItemCount(): Int = contactsList?.size!!
+    override fun getItemCount(): Int = contactsList.size
 
-    fun updateList(list: ArrayList<Contact>?) {
+    fun updateList(list: ArrayList<Contact>) {
         this.contactsList = list
         notifyDataSetChanged()
     }
 
-    class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val contactName: TextView = view.findViewById(R.id.contact_name)
-        val contactMobile: TextView = view.findViewById(R.id.contact_mobile)
-        val contactImage: CircleImageView = view.findViewById(R.id.contact_image)
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val contactName: TextView = itemView.findViewById(R.id.contact_name)
+        private val contactMobile: TextView = itemView.findViewById(R.id.contact_mobile)
+        private val contactImage: CircleImageView = itemView.findViewById(R.id.contact_image)
+
+        fun bind(contact: Contact) {
+            contactName.text = contact.contactName
+            contactMobile.text = contact.contactNumber
+
+            Glide.with(itemView.context)
+                .load(contact.contactUri)
+                .placeholder(R.drawable.ic_account_circle_white)
+                .fallback(R.drawable.ic_account_circle_white)
+                .error(R.drawable.ic_account_circle_white)
+                .into(contactImage)
+        }
     }
 
 }

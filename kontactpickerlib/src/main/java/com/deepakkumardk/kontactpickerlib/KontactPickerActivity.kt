@@ -34,7 +34,7 @@ import org.jetbrains.anko.yesButton
 class KontactPickerActivity : AppCompatActivity() {
     private var myKontacts: MutableList<MyContacts> = mutableListOf()
     private var selectedKontacts: MutableList<MyContacts> = ArrayList()
-    private var kontactsAdapter: KontactsAdapter? = null
+    private lateinit var kontactsAdapter: KontactsAdapter
     private var debugMode = false
 
     private lateinit var fabDone: FloatingActionButton
@@ -53,9 +53,7 @@ class KontactPickerActivity : AppCompatActivity() {
 
         initToolbar()
 
-        kontactsAdapter = KontactsAdapter(myKontacts) { contact, _, view ->
-            onItemClick(contact, view)
-        }
+        kontactsAdapter = KontactsAdapter(myKontacts, this::onItemClick)
         recyclerView.init(this)
         recyclerView.adapter = kontactsAdapter
         checkPermission()
@@ -90,9 +88,7 @@ class KontactPickerActivity : AppCompatActivity() {
             }
         })
         search.setOnCloseListener {
-            //            kontactsAdapter?.updateList(myKontacts)
             return@setOnCloseListener true
-
         }
 
         menu.findItem(R.id.action_search)
@@ -103,7 +99,7 @@ class KontactPickerActivity : AppCompatActivity() {
                 }
 
                 override fun onMenuItemActionCollapse(menuItem: MenuItem): Boolean {
-                    kontactsAdapter?.updateList(myKontacts)
+                    kontactsAdapter.updateList(myKontacts)
                     val typedValue = TypedValue()
                     theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
                     val color = typedValue.data
@@ -116,12 +112,13 @@ class KontactPickerActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            android.R.id.home -> finish()
-            R.id.action_search -> log("Search")
+        return when (item?.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun animateToolbar() {
@@ -143,10 +140,11 @@ class KontactPickerActivity : AppCompatActivity() {
 
     private fun initToolbar() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(resources.getDrawable(R.drawable.ic_arrow_back))
+        val drawable = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back)
+        supportActionBar?.setHomeAsUpIndicator(drawable)
     }
 
-    private fun onItemClick(contact: MyContacts?, view: View) {
+    private fun onItemClick(contact: MyContacts?, position: Int, view: View) {
         contact?.isSelected = !contact?.isSelected!!
         when (contact.isSelected) {
             true -> {
@@ -179,11 +177,11 @@ class KontactPickerActivity : AppCompatActivity() {
         for (contact in myKontacts) {
             val name = contact.contactName
             val number = contact.contactNumber
-            if (name?.contains(text, true)!! || number?.contains(text)!!) {
+            if (name?.contains(text, true) == true || number?.contains(text) == true) {
                 tempList.add(contact)
             }
         }
-        kontactsAdapter?.updateList(tempList)
+        kontactsAdapter.updateList(tempList)
     }
 
     private fun checkPermission() {
@@ -201,9 +199,7 @@ class KontactPickerActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == RC_READ_CONTACTS) {
@@ -239,7 +235,7 @@ class KontactPickerActivity : AppCompatActivity() {
             }
             progressBar.hide()
             setSubtitle()
-            kontactsAdapter?.notifyDataSetChanged()
+            kontactsAdapter.notifyDataSetChanged()
         }
     }
 }

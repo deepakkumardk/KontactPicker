@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
@@ -25,8 +26,8 @@ import com.deepakkumardk.kontactpickerlib.util.show
  */
 
 class MainActivity : AppCompatActivity() {
-    private var myContacts: ArrayList<Contact>? = ArrayList()
-    private var contactsAdapter: ContactAdapter? = null
+    private var myContacts: ArrayList<Contact> = ArrayList()
+    private lateinit var contactsAdapter: ContactAdapter
 
     val debugModeCheck = MutableLiveData<Boolean>()
     val imageModeCheck = MutableLiveData<Int>()
@@ -52,16 +53,16 @@ class MainActivity : AppCompatActivity() {
     private fun showAllKontacts() {
         val startTime = System.currentTimeMillis()
         binding.progressBar.show()
-        myContacts?.clear()
-        contactsAdapter?.updateList(myContacts)
+        myContacts.clear()
+        contactsAdapter.updateList(myContacts)
         KontactPicker.getAllKontactsWithUri(this, true) {
             binding.progressBar.hide()
             for (contact in it) {
-                myContacts?.add(
+                myContacts.add(
                     Contact(contact.contactName, contact.contactNumber, contact.photoUri)
                 )
             }
-            contactsAdapter?.updateList(myContacts)
+            contactsAdapter.updateList(myContacts)
 
             val fetchingTime = System.currentTimeMillis() - startTime
             log("Fetching Completed in $fetchingTime ms")
@@ -103,8 +104,8 @@ class MainActivity : AppCompatActivity() {
             }
             positiveButton(R.string.select)
             negativeButton(R.string.select_none) {
-                binding.btnColorPicker.background = resources.getDrawable(
-                    android.R.color.darker_gray
+                binding.btnColorPicker.background = ContextCompat.getDrawable(
+                    this@MainActivity, android.R.color.darker_gray
                 )
                 colorDefault = null
             }
@@ -119,16 +120,12 @@ class MainActivity : AppCompatActivity() {
             myContacts = arrayListOf()
             if (list != null) {
                 for (contact in list) {
-                    myContacts?.add(
-                        Contact(
-                            contact.contactName,
-                            contact.contactNumber,
-                            contact.photoUri
-                        )
+                    myContacts.add(
+                        Contact(contact.contactName, contact.contactNumber, contact.photoUri)
                     )
                 }
             }
-            contactsAdapter?.updateList(myContacts)
+            contactsAdapter.updateList(myContacts)
         }
     }
 
