@@ -14,17 +14,17 @@ import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
-import androidx.recyclerview.widget.RecyclerView
 import com.deepakkumardk.kontactpickerlib.model.MyContacts
+import com.deepakkumardk.kontactpickerlib.model.SelectionMode
 import com.deepakkumardk.kontactpickerlib.util.*
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.activity_kontact_picker.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.longToast
+import org.jetbrains.anko.toast
 import org.jetbrains.anko.yesButton
 
 /**
@@ -34,12 +34,8 @@ import org.jetbrains.anko.yesButton
 class KontactPickerActivity : AppCompatActivity() {
     private var myKontacts: MutableList<MyContacts> = mutableListOf()
     private var selectedKontacts: MutableList<MyContacts> = ArrayList()
-    private lateinit var kontactsAdapter: KontactsAdapter
+    private var kontactsAdapter: KontactsAdapter? = null
     private var debugMode = false
-
-    private lateinit var fabDone: FloatingActionButton
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,24 +43,17 @@ class KontactPickerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_kontact_picker)
 
         debugMode = KontactPickerUI.getDebugMode()
-
         logInitialValues()
-        initView()
-
         initToolbar()
 
-        kontactsAdapter = KontactsAdapter(myKontacts, this::onItemClick)
-        recyclerView.init(this)
-        recyclerView.adapter = kontactsAdapter
+        kontactsAdapter = KontactsAdapter(myKontacts) { contact, _, view ->
+            onItemClick(contact, view)
+        }
+        recycler_view.init(this)
+        recycler_view.adapter = kontactsAdapter
         checkPermission()
 
-        fabDone.setOnClickListener {
-            val result = Intent()
-            val list = getSelectedKontacts()
-            result.putExtra(EXTRA_SELECTED_CONTACTS, list)
-            setResult(Activity.RESULT_OK, result)
-            finish()
-        }
+        fab_done.setOnClickListener { sendResultIntent() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -99,7 +88,7 @@ class KontactPickerActivity : AppCompatActivity() {
                 }
 
                 override fun onMenuItemActionCollapse(menuItem: MenuItem): Boolean {
-                    kontactsAdapter.updateList(myKontacts)
+                    kontactsAdapter?.updateList(myKontacts)
                     val typedValue = TypedValue()
                     theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
                     val color = typedValue.data
@@ -112,13 +101,12 @@ class KontactPickerActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            android.R.id.home -> {
-                finish()
-                true
-            }
+        when (item?.itemId) {
+            android.R.id.home -> finish()
+            R.id.action_search -> log("Search")
             else -> super.onOptionsItemSelected(item)
         }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun animateToolbar() {
@@ -140,24 +128,42 @@ class KontactPickerActivity : AppCompatActivity() {
 
     private fun initToolbar() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        val drawable = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back)
-        supportActionBar?.setHomeAsUpIndicator(drawable)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
     }
 
-    private fun onItemClick(contact: MyContacts?, position: Int, view: View) {
-        contact?.isSelected = !contact?.isSelected!!
-        when (contact.isSelected) {
-            true -> {
-                view.show()
-                selectedKontacts.add(contact)
+    private fun onItemClick(contact: MyContacts?, view: View) {
+        when (KontactPickerUI.getPickerItem().selectionMode) {
+            is SelectionMode.Single -> {
+                contact?.isSelected = !(contact?.isSelected ?: false)
+                contact?.let { selectedKontacts.add(it) }
+                sendResultIntent()
             }
-            false -> {
-                view.hide()
-                selectedKontacts.remove(contact)
+            is SelectionMode.Multiple -> addSelectedItem(contact, view)
+            is SelectionMode.Custom -> {
+                val custom = KontactPickerUI.getPickerItem().selectionMode as SelectionMode.Custom
+                if (selectedKontacts.size >= custom.limit && contact?.isSelected == false) {
+                    toast(getLimitMessage(custom.limit))
+                    return
+                } else {
+                    addSelectedItem(contact, view)
+                }
             }
         }
         setSubtitle()
     }
+
+    private fun addSelectedItem(contact: MyContacts?, view: View) {
+        contact?.isSelected = !(contact?.isSelected ?: false)
+        if (contact?.isSelected == true) {
+            view.show()
+            selectedKontacts.add(contact)
+        } else if (contact?.isSelected == false) {
+            view.hide()
+            selectedKontacts.remove(contact)
+        }
+    }
+
+    private fun getLimitMessage(limit: Int) = KontactPickerUI.getPickerItem().limitMsg.format(limit)
 
     private fun getSelectedKontacts(): ArrayList<MyContacts> {
         val list = arrayListOf<MyContacts>()
@@ -181,50 +187,58 @@ class KontactPickerActivity : AppCompatActivity() {
                 tempList.add(contact)
             }
         }
-        kontactsAdapter.updateList(tempList)
+        kontactsAdapter?.updateList(tempList)
     }
 
     private fun checkPermission() {
-        val contactReadPermission = ContextCompat.checkSelfPermission(
-            this, Manifest.permission.READ_CONTACTS
-        ) == PackageManager.PERMISSION_GRANTED
+        val contactReadPermission = isGranted(Manifest.permission.READ_CONTACTS)
         if (contactReadPermission) {
             loadContacts()
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(
-                arrayOf(Manifest.permission.READ_CONTACTS),
-                RC_READ_CONTACTS
-            )
+            requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), RC_READ_CONTACTS)
         }
     }
 
+    @Suppress("SameParameterValue")
+    private fun isGranted(permission: String): Boolean {
+        val perm = ContextCompat.checkSelfPermission(this, permission)
+        return perm == PackageManager.PERMISSION_GRANTED
+    }
+
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == RC_READ_CONTACTS) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // permission was granted, yay! Do the contacts-related task you need to do.
                 loadContacts()
             } else {
+                // permission denied, boo! Disable the functionality that depends on this permission.
                 alert(
-                    "Please allow us to show contacts.",
-                    "Permission Request"
+                    title = KontactPickerUI.getPickerItem().permissionDeniedTitle,
+                    message = KontactPickerUI.getPickerItem().permissionDeniedMsg
                 ) {
                     yesButton { checkPermission() }
                 }.show()
             }
+            return
         }
     }
 
-    private fun initView() {
-        recyclerView = findViewById(R.id.recycler_view)
-        progressBar = findViewById(R.id.progress_bar)
-        fabDone = findViewById(R.id.fab_done)
+    private fun sendResultIntent() {
+        val result = Intent()
+        val list = getSelectedKontacts()
+        result.putExtra(EXTRA_SELECTED_CONTACTS, list)
+        setResult(Activity.RESULT_OK, result)
+        finish()
     }
 
     private fun loadContacts() {
         myKontacts.clear()
-        progressBar.show()
+        progress_bar.show()
         val startTime = System.currentTimeMillis()
         KontactEx().getAllContacts(this) {
             myKontacts.addAll(it)
@@ -233,9 +247,9 @@ class KontactPickerActivity : AppCompatActivity() {
                 longToast("Fetching Completed in $fetchingTime ms")
                 log("Fetching Completed in $fetchingTime ms")
             }
-            progressBar.hide()
+            progress_bar.hide()
             setSubtitle()
-            kontactsAdapter.notifyDataSetChanged()
+            kontactsAdapter?.notifyDataSetChanged()
         }
     }
 }

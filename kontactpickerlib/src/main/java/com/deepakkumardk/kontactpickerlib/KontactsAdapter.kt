@@ -16,8 +16,9 @@ import de.hdodenhof.circleimageview.CircleImageView
 /**
  * Created by Deepak Kumar on 25/05/2019
  */
+
 class KontactsAdapter(
-    private var contactsList: MutableList<MyContacts>,
+    private var contactsList: MutableList<MyContacts>?,
     private val listener: (MyContacts, Int, View) -> Unit
 ) : RecyclerView.Adapter<KontactsAdapter.KontactViewHolder>() {
 
@@ -31,53 +32,45 @@ class KontactsAdapter(
     }
 
     override fun onBindViewHolder(holder: KontactViewHolder, position: Int) {
-        holder.bind(contactsList[position])
+        holder.bind(holder.adapterPosition)
     }
 
-    override fun getItemCount(): Int = contactsList.size
+    override fun getItemCount() = contactsList?.size ?: 0
 
     fun updateList(list: MutableList<MyContacts>) {
         this.contactsList = list
         notifyDataSetChanged()
     }
 
-    private fun CircleImageView.loadImage(contactId: String?) {
-        Glide.with(this.context)
-            .load(getContactImageUri(contactId?.toLong()!!))
-            .placeholder(R.drawable.ic_account_circle_white)
-            .fallback(R.drawable.ic_account_circle_white)
-            .error(R.drawable.ic_account_circle_white)
-            .into(this)
-    }
-
-    inner class KontactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val contactName: TextView = itemView.findViewById(R.id.contact_name)
-        private val contactMobile: TextView = itemView.findViewById(R.id.contact_mobile)
-        private val contactImage: CircleImageView = itemView.findViewById(R.id.contact_image)
-        private val contactTickSmall: CircleImageView = itemView.findViewById(R.id.contact_tick_small)
-        private val contactTickLarge: ImageView = itemView.findViewById(R.id.contact_tick_large)
+    inner class KontactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val contactName: TextView = view.findViewById(R.id.contact_name)
+        private val contactMobile: TextView = view.findViewById(R.id.contact_mobile)
+        private val contactImage: CircleImageView = view.findViewById(R.id.contact_image)
+        private val contactTickSmall: CircleImageView = view.findViewById(R.id.contact_tick_small)
+        private val contactTickLarge: ImageView = view.findViewById(R.id.contact_tick_large)
 
         init {
             itemView.setOnClickListener {
-                when (selectionTickView) {
-                    SelectionTickView.SmallView -> {
-                        listener(contactsList[adapterPosition], adapterPosition, contactTickSmall)
+                val contact = contactsList?.get(adapterPosition)
+                if (contact != null)
+                    when (selectionTickView) {
+                        SelectionTickView.SmallView -> listener(
+                            contact, adapterPosition, contactTickSmall
+                        )
+                        else -> listener(contact, adapterPosition, contactTickLarge)
                     }
-                    SelectionTickView.LargeView -> {
-                        listener(contactsList[adapterPosition], adapterPosition, contactTickSmall)
-                    }
-                }
             }
         }
 
-        fun bind(contact: MyContacts) {
-            contactName.text = contact.contactName
-            if (contact.contactNumber?.isNotEmpty() == true)
+        fun bind(position: Int) {
+            val contact = contactsList?.get(position)
+            contactName.text = contact?.contactName
+            if (contact?.contactNumber?.isNotEmpty()!!)
                 contactMobile.text = contact.contactNumber
 
             when (imageMode) {
                 ImageMode.None -> {
-                    Glide.with(contactImage.context)
+                    Glide.with(itemView.context)
                         .load(R.drawable.ic_account_circle_white)
                         .into(contactImage)
                 }
@@ -85,7 +78,12 @@ class KontactsAdapter(
                     contactImage.setImageDrawable(getTextDrawable(contact.contactName ?: ""))
                 }
                 ImageMode.UserImageMode -> {
-                    contactImage.loadImage(contact.contactId)
+                    Glide.with(itemView.context)
+                        .load(getContactImageUri(contact.contactId?.toLong() ?: 0))
+                        .placeholder(R.drawable.ic_account_circle_white)
+                        .fallback(R.drawable.ic_account_circle_white)
+                        .error(R.drawable.ic_account_circle_white)
+                        .into(contactImage)
                 }
             }
 

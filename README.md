@@ -43,6 +43,7 @@ If you want to start this library from a fragment just pass the fragment context
 
 
 ### Customization
+See KontactPickerItem class for more customization.
 ```kotlin
     val item = KontactPickerItem().apply {
         debugMode = true
@@ -50,6 +51,7 @@ If you want to start this library from a fragment just pass the fragment context
         imageMode = ImageMode.TextMode                      //Default is None
         themeResId = R.style.CustomTheme                    //Default is Dark Theme
         selectionTickView = SelectionTickView.LargeView     //Default is SmallView
+        selectionMode = SelectionMode.Single                //Default is SelectionMode.Multiple
         textBgColor = ContextCompat.getColor(this@MainActivity, R.color.colorPrimary)  //Default is Random Color
     }
     KontactPicker().startPickerForResult(this, item, 3000)  //RequestCode
@@ -87,7 +89,7 @@ which is also as fast as the above.
 ## License
 
 ```
- Copyright 2019 Deepak Kumar
+ Copyright 2020 Deepak Kumar
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

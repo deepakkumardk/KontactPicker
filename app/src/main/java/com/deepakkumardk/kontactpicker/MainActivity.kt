@@ -15,6 +15,7 @@ import com.deepakkumardk.kontactpicker.databinding.ActivityMainBinding
 import com.deepakkumardk.kontactpickerlib.KontactPicker
 import com.deepakkumardk.kontactpickerlib.model.ImageMode
 import com.deepakkumardk.kontactpickerlib.model.KontactPickerItem
+import com.deepakkumardk.kontactpickerlib.model.SelectionMode
 import com.deepakkumardk.kontactpickerlib.model.SelectionTickView
 import com.deepakkumardk.kontactpickerlib.util.hide
 import com.deepakkumardk.kontactpickerlib.util.init
@@ -26,14 +27,15 @@ import com.deepakkumardk.kontactpickerlib.util.show
  */
 
 class MainActivity : AppCompatActivity() {
-    private var myContacts: ArrayList<Contact> = ArrayList()
-    private lateinit var contactsAdapter: ContactAdapter
+    private var myContacts: ArrayList<Contact>? = ArrayList()
+    private var contactsAdapter: ContactAdapter? = null
 
     val debugModeCheck = MutableLiveData<Boolean>()
-    val imageModeCheck = MutableLiveData<Int>()
-    val selectionModeCheck = MutableLiveData<Int>()
-    var colorDefault: Int? = null
-    lateinit var binding: ActivityMainBinding
+    val imageModeGroup = MutableLiveData<Int>()
+    val selectionTickViewGroup = MutableLiveData<Int>()
+    val selectionModeGroup = MutableLiveData<Int>()
+    private var colorDefault: Int? = null
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,16 +55,16 @@ class MainActivity : AppCompatActivity() {
     private fun showAllKontacts() {
         val startTime = System.currentTimeMillis()
         binding.progressBar.show()
-        myContacts.clear()
-        contactsAdapter.updateList(myContacts)
-        KontactPicker.getAllKontactsWithUri(this, true) {
+        myContacts?.clear()
+        contactsAdapter?.updateList(myContacts)
+        KontactPicker.getAllKontactsWithUri(this) {
             binding.progressBar.hide()
             for (contact in it) {
-                myContacts.add(
+                myContacts?.add(
                     Contact(contact.contactName, contact.contactNumber, contact.photoUri)
                 )
             }
-            contactsAdapter.updateList(myContacts)
+            contactsAdapter?.updateList(myContacts)
 
             val fetchingTime = System.currentTimeMillis() - startTime
             log("Fetching Completed in $fetchingTime ms")
@@ -73,21 +75,24 @@ class MainActivity : AppCompatActivity() {
         val item = KontactPickerItem().apply {
             debugMode = debugModeCheck.value ?: false
             //            textBgColor = ContextCompat.getColor(this@MainActivity, R.color.colorBlue100)
-            colorDefault?.let {
-                textBgColor = it
-            }
+            colorDefault?.let { textBgColor = it }
             includePhotoUri = true
             themeResId = R.style.CustomTheme
-            imageMode = when (imageModeCheck.value) {
+            imageMode = when (imageModeGroup.value) {
                 0 -> ImageMode.None
                 1 -> ImageMode.TextMode
                 2 -> ImageMode.UserImageMode
                 else -> ImageMode.None
             }
-            selectionTickView = when (selectionModeCheck.value) {
+            selectionTickView = when (selectionTickViewGroup.value) {
                 0 -> SelectionTickView.SmallView
                 1 -> SelectionTickView.LargeView
                 else -> SelectionTickView.SmallView
+            }
+            selectionMode = when (selectionModeGroup.value) {
+                0 -> SelectionMode.Single
+                1 -> SelectionMode.Multiple
+                else -> SelectionMode.Multiple
             }
         }
 
@@ -120,12 +125,12 @@ class MainActivity : AppCompatActivity() {
             myContacts = arrayListOf()
             if (list != null) {
                 for (contact in list) {
-                    myContacts.add(
+                    myContacts?.add(
                         Contact(contact.contactName, contact.contactNumber, contact.photoUri)
                     )
                 }
             }
-            contactsAdapter.updateList(myContacts)
+            contactsAdapter?.updateList(myContacts)
         }
     }
 
