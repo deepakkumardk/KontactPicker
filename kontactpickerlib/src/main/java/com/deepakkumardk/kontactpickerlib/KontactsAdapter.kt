@@ -12,7 +12,6 @@ import com.deepakkumardk.kontactpickerlib.model.MyContacts
 import com.deepakkumardk.kontactpickerlib.model.SelectionTickView
 import com.deepakkumardk.kontactpickerlib.util.*
 import de.hdodenhof.circleimageview.CircleImageView
-import org.jetbrains.anko.find
 
 /**
  * Created by Deepak Kumar on 25/05/2019
@@ -33,73 +32,76 @@ class KontactsAdapter(
     }
 
     override fun onBindViewHolder(holder: KontactViewHolder, position: Int) {
-        val contact = contactsList!![position] as MyContacts?
-        holder.contactName.text = contact?.contactName
-        if (contact?.contactNumber?.isNotEmpty()!!)
-            holder.contactMobile.text = contact.contactNumber
-
-        when (imageMode) {
-            ImageMode.None -> {
-                Glide.with(holder.itemView.context)
-                    .load(R.drawable.ic_account_circle_white)
-                    .into(holder.contactImage)
-            }
-            ImageMode.TextMode -> {
-
-                holder.contactImage.setImageDrawable(
-                    getTextDrawable(contact.contactName!!)
-                )
-            }
-            ImageMode.UserImageMode -> {
-                Glide.with(holder.itemView.context)
-                    .load(getContactImageUri(contact.contactId?.toLong()!!))
-                    .placeholder(R.drawable.ic_account_circle_white)
-                    .fallback(R.drawable.ic_account_circle_white)
-                    .error(R.drawable.ic_account_circle_white)
-                    .into(holder.contactImage)
-            }
-        }
-
-        holder.itemView.setOnClickListener {
-            when (selectionTickView) {
-                SelectionTickView.SmallView -> listener(
-                    contact,
-                    holder.adapterPosition,
-                    holder.contactTickSmall
-                )
-                else -> listener(contact, holder.adapterPosition, holder.contactTickLarge)
-            }
-        }
-
-        when (contact.isSelected) {
-            true -> {
-                when (selectionTickView) {
-                    SelectionTickView.SmallView -> holder.contactTickSmall.show()
-                    SelectionTickView.LargeView -> holder.contactTickLarge.show()
-                }
-            }
-            false -> {
-                when (selectionTickView) {
-                    SelectionTickView.SmallView -> holder.contactTickSmall.hide()
-                    SelectionTickView.LargeView -> holder.contactTickLarge.hide()
-                }
-            }
-        }
+        holder.bind(holder.adapterPosition)
     }
 
-    override fun getItemCount(): Int = contactsList?.size!!
+    override fun getItemCount() = contactsList?.size ?: 0
 
     fun updateList(list: MutableList<MyContacts>) {
         this.contactsList = list
         notifyDataSetChanged()
     }
 
-    class KontactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val contactName = view.find<TextView>(R.id.contact_name)
-        val contactMobile = view.find<TextView>(R.id.contact_mobile)
-        val contactImage = view.find<CircleImageView>(R.id.contact_image)
-        val contactTickSmall = view.find<CircleImageView>(R.id.contact_tick_small)
-        val contactTickLarge = view.find<ImageView>(R.id.contact_tick_large)
+    inner class KontactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val contactName: TextView = view.findViewById(R.id.contact_name)
+        private val contactMobile: TextView = view.findViewById(R.id.contact_mobile)
+        private val contactImage: CircleImageView = view.findViewById(R.id.contact_image)
+        private val contactTickSmall: CircleImageView = view.findViewById(R.id.contact_tick_small)
+        private val contactTickLarge: ImageView = view.findViewById(R.id.contact_tick_large)
+
+        init {
+            itemView.setOnClickListener {
+                val contact = contactsList?.get(adapterPosition)
+                if (contact != null)
+                    when (selectionTickView) {
+                        SelectionTickView.SmallView -> listener(
+                            contact, adapterPosition, contactTickSmall
+                        )
+                        else -> listener(contact, adapterPosition, contactTickLarge)
+                    }
+            }
+        }
+
+        fun bind(position: Int) {
+            val contact = contactsList?.get(position)
+            contactName.text = contact?.contactName
+            if (contact?.contactNumber?.isNotEmpty()!!)
+                contactMobile.text = contact.contactNumber
+
+            when (imageMode) {
+                ImageMode.None -> {
+                    Glide.with(itemView.context)
+                        .load(R.drawable.ic_account_circle_white)
+                        .into(contactImage)
+                }
+                ImageMode.TextMode -> {
+                    contactImage.setImageDrawable(getTextDrawable(contact.contactName ?: ""))
+                }
+                ImageMode.UserImageMode -> {
+                    Glide.with(itemView.context)
+                        .load(getContactImageUri(contact.contactId?.toLong() ?: 0))
+                        .placeholder(R.drawable.ic_account_circle_white)
+                        .fallback(R.drawable.ic_account_circle_white)
+                        .error(R.drawable.ic_account_circle_white)
+                        .into(contactImage)
+                }
+            }
+
+            when (contact.isSelected) {
+                true -> {
+                    when (selectionTickView) {
+                        SelectionTickView.SmallView -> contactTickSmall.show()
+                        SelectionTickView.LargeView -> contactTickLarge.show()
+                    }
+                }
+                false -> {
+                    when (selectionTickView) {
+                        SelectionTickView.SmallView -> contactTickSmall.hide()
+                        SelectionTickView.LargeView -> contactTickLarge.hide()
+                    }
+                }
+            }
+        }
     }
 
 }

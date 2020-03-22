@@ -59,7 +59,6 @@ fun getContactImageUri(contactId: Long): Uri? {
         ContactsContract.Contacts.CONTENT_URI, contactId
     )
     return Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY)
-
 }
 
 fun Activity?.applyCustomTheme(themeId: Int?) {

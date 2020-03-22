@@ -22,29 +22,33 @@ class ContactAdapter(private var contactsList: ArrayList<Contact>?) :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val contact = contactsList!![position] as Contact?
-        holder.contactName.text = contact?.contactName
-        holder.contactMobile.text = contact?.contactNumber
-
-        Glide.with(holder.itemView.context)
-            .load(contact?.contactUri)
-            .placeholder(R.drawable.ic_account_circle_white)
-            .fallback(R.drawable.ic_account_circle_white)
-            .error(R.drawable.ic_account_circle_white)
-            .into(holder.contactImage)
+        holder.bind(holder.adapterPosition)
     }
 
-    override fun getItemCount(): Int = contactsList?.size!!
+    override fun getItemCount() = contactsList?.size ?: 0
 
     fun updateList(list: ArrayList<Contact>?) {
         this.contactsList = list
         notifyDataSetChanged()
     }
 
-    class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val contactName: TextView = view.findViewById(R.id.contact_name)
-        val contactMobile: TextView = view.findViewById(R.id.contact_mobile)
-        val contactImage: CircleImageView = view.findViewById(R.id.contact_image)
+    inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val contactName: TextView = view.findViewById(R.id.contact_name)
+        private val contactMobile: TextView = view.findViewById(R.id.contact_mobile)
+        private val contactImage: CircleImageView = view.findViewById(R.id.contact_image)
+
+        fun bind(position: Int) {
+            val contact = contactsList?.get(position)
+            contactName.text = contact?.contactName
+            contactMobile.text = contact?.contactNumber
+
+            Glide.with(itemView.context)
+                .load(contact?.contactUri)
+                .placeholder(R.drawable.ic_account_circle_white)
+                .fallback(R.drawable.ic_account_circle_white)
+                .error(R.drawable.ic_account_circle_white)
+                .into(contactImage)
+        }
     }
 
 }

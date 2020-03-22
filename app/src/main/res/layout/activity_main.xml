@@ -18,13 +18,13 @@
         tools:context=".MainActivity">
 
         <RadioGroup
-            android:id="@+id/image_mode_group"
+            android:id="@+id/imageModeGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="8dp"
             android:orientation="horizontal"
-            app:checkedPosition="@={activity.imageModeCheck}">
+            app:checkedPosition="@={activity.imageModeGroup}">
 
             <RadioButton
                 android:layout_width="wrap_content"
@@ -50,13 +50,13 @@
         </RadioGroup>
 
         <RadioGroup
-            android:id="@+id/selection_mode_group"
+            android:id="@+id/selectionTickViewGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="8dp"
             android:orientation="horizontal"
-            app:checkedPosition="@={activity.selectionModeCheck}">
+            app:checkedPosition="@={activity.selectionTickViewGroup}">
 
             <RadioButton
                 android:layout_width="wrap_content"
@@ -70,6 +70,30 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:text="LargeView"
+                tools:ignore="HardcodedText" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/selectionModeGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:checkedPosition="@={activity.selectionModeGroup}">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Single Selection"
+                tools:ignore="HardcodedText" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text="Multiple Selection"
                 tools:ignore="HardcodedText" />
         </RadioGroup>
 
@@ -89,7 +113,7 @@
                 tools:ignore="HardcodedText" />
 
             <Button
-                android:id="@+id/btn_color_picker"
+                android:id="@+id/btnColorPicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -106,7 +130,7 @@
             android:layout_marginTop="8dp">
 
             <Button
-                android:id="@+id/kontact_picker_btn"
+                android:id="@+id/kontactPickerBtn"
                 style="?android:attr/buttonBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -117,7 +141,7 @@
                 tools:ignore="HardcodedText" />
 
             <Button
-                android:id="@+id/get_all_kontact_btn"
+                android:id="@+id/getAllKontactBtn"
                 style="?android:attr/buttonBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -132,7 +156,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/title_selected_contacts"
+            android:id="@+id/titleSelectedContacts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
@@ -142,7 +166,7 @@
             tools:text="@string/selected_contacts" />
 
         <ProgressBar
-            android:id="@+id/progress_bar"
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -151,7 +175,7 @@
             tools:targetApi="lollipop" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"

@@ -19,10 +19,12 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import com.deepakkumardk.kontactpickerlib.model.MyContacts
+import com.deepakkumardk.kontactpickerlib.model.SelectionMode
 import com.deepakkumardk.kontactpickerlib.util.*
 import kotlinx.android.synthetic.main.activity_kontact_picker.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.longToast
+import org.jetbrains.anko.toast
 import org.jetbrains.anko.yesButton
 
 /**
@@ -41,9 +43,7 @@ class KontactPickerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_kontact_picker)
 
         debugMode = KontactPickerUI.getDebugMode()
-
         logInitialValues()
-
         initToolbar()
 
         kontactsAdapter = KontactsAdapter(myKontacts) { contact, _, view ->
@@ -53,13 +53,7 @@ class KontactPickerActivity : AppCompatActivity() {
         recycler_view.adapter = kontactsAdapter
         checkPermission()
 
-        fab_done.setOnClickListener {
-            val result = Intent()
-            val list = getSelectedKontacts()
-            result.putExtra(EXTRA_SELECTED_CONTACTS, list)
-            setResult(Activity.RESULT_OK, result)
-            finish()
-        }
+        fab_done.setOnClickListener { sendResultIntent() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -83,9 +77,7 @@ class KontactPickerActivity : AppCompatActivity() {
             }
         })
         search.setOnCloseListener {
-            //            kontactsAdapter?.updateList(myKontacts)
             return@setOnCloseListener true
-
         }
 
         menu.findItem(R.id.action_search)
@@ -136,23 +128,42 @@ class KontactPickerActivity : AppCompatActivity() {
 
     private fun initToolbar() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back))
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
     }
 
     private fun onItemClick(contact: MyContacts?, view: View) {
-        contact?.isSelected = !contact?.isSelected!!
-        when (contact.isSelected) {
-            true -> {
-                view.show()
-                selectedKontacts.add(contact)
+        when (KontactPickerUI.getPickerItem().selectionMode) {
+            is SelectionMode.Single -> {
+                contact?.isSelected = !(contact?.isSelected ?: false)
+                contact?.let { selectedKontacts.add(it) }
+                sendResultIntent()
             }
-            false -> {
-                view.hide()
-                selectedKontacts.remove(contact)
+            is SelectionMode.Multiple -> addSelectedItem(contact, view)
+            is SelectionMode.Custom -> {
+                val custom = KontactPickerUI.getPickerItem().selectionMode as SelectionMode.Custom
+                if (selectedKontacts.size >= custom.limit && contact?.isSelected == false) {
+                    toast(getLimitMessage(custom.limit))
+                    return
+                } else {
+                    addSelectedItem(contact, view)
+                }
             }
         }
         setSubtitle()
     }
+
+    private fun addSelectedItem(contact: MyContacts?, view: View) {
+        contact?.isSelected = !(contact?.isSelected ?: false)
+        if (contact?.isSelected == true) {
+            view.show()
+            selectedKontacts.add(contact)
+        } else if (contact?.isSelected == false) {
+            view.hide()
+            selectedKontacts.remove(contact)
+        }
+    }
+
+    private fun getLimitMessage(limit: Int) = KontactPickerUI.getPickerItem().limitMsg.format(limit)
 
     private fun getSelectedKontacts(): ArrayList<MyContacts> {
         val list = arrayListOf<MyContacts>()
@@ -172,7 +183,7 @@ class KontactPickerActivity : AppCompatActivity() {
         for (contact in myKontacts) {
             val name = contact.contactName
             val number = contact.contactNumber
-            if (name?.contains(text, true)!! || number?.contains(text)!!) {
+            if (name?.contains(text, true) == true || number?.contains(text) == true) {
                 tempList.add(contact)
             }
         }
@@ -180,22 +191,18 @@ class KontactPickerActivity : AppCompatActivity() {
     }
 
     private fun checkPermission() {
-        val contactReadPermission = ContextCompat.checkSelfPermission(
-            this, Manifest.permission.READ_CONTACTS
-        ) == PackageManager.PERMISSION_GRANTED
-        when {
-            contactReadPermission -> {
-                loadContacts()
-            }
-            else -> when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
-                    requestPermissions(
-                        arrayOf(Manifest.permission.READ_CONTACTS),
-                        RC_READ_CONTACTS
-                    )
-                }
-            }
+        val contactReadPermission = isGranted(Manifest.permission.READ_CONTACTS)
+        if (contactReadPermission) {
+            loadContacts()
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), RC_READ_CONTACTS)
         }
+    }
+
+    @Suppress("SameParameterValue")
+    private fun isGranted(permission: String): Boolean {
+        val perm = ContextCompat.checkSelfPermission(this, permission)
+        return perm == PackageManager.PERMISSION_GRANTED
     }
 
     override fun onRequestPermissionsResult(
@@ -204,24 +211,29 @@ class KontactPickerActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            RC_READ_CONTACTS -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the contacts-related task you need to do.
-                    loadContacts()
-                } else {
-                    // permission denied, boo! Disable the functionality that depends on this permission.
-                    alert(
-                        title = "Permission Request",
-                        message = "Please allow us to show contacts."
-                    ) {
-                        yesButton { checkPermission() }
-                    }.show()
-                }
-                return
-
+        if (requestCode == RC_READ_CONTACTS) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // permission was granted, yay! Do the contacts-related task you need to do.
+                loadContacts()
+            } else {
+                // permission denied, boo! Disable the functionality that depends on this permission.
+                alert(
+                    title = KontactPickerUI.getPickerItem().permissionDeniedTitle,
+                    message = KontactPickerUI.getPickerItem().permissionDeniedMsg
+                ) {
+                    yesButton { checkPermission() }
+                }.show()
             }
+            return
         }
+    }
+
+    private fun sendResultIntent() {
+        val result = Intent()
+        val list = getSelectedKontacts()
+        result.putExtra(EXTRA_SELECTED_CONTACTS, list)
+        setResult(Activity.RESULT_OK, result)
+        finish()
     }
 
     private fun loadContacts() {
