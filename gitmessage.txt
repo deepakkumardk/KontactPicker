@@ -1,15 +1,13 @@
 # [Add/Fix/Remove/Update/Refactor/Document] [summary]
 
-
 # More changes. if any
-+
+#+
 # Why is it necessary? (Bug fix, feature, improvements?)
--
+#-
 # How does the change address the issue? 
-^
+#^
 # What side effects does this change have? if any.
-*
+#*
 # Include a link to the ticket, if any.
-
 # By Deepak Kumar
 

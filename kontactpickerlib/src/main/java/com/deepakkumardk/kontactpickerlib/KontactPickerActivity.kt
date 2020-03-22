@@ -136,7 +136,7 @@ class KontactPickerActivity : AppCompatActivity() {
 
     private fun initToolbar() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(resources.getDrawable(R.drawable.ic_arrow_back))
+        supportActionBar?.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back))
     }
 
     private fun onItemClick(contact: MyContacts?, view: View) {
