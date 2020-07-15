@@ -1,6 +1,6 @@
-package com.deepakkumardk.kontactpickerlib.util
+package com.donsdirectory.lib.util
 
-import com.deepakkumardk.kontactpickerlib.model.KontactPickerItem
+import com.donsdirectory.lib.model.KontactPickerItem
 
 /**
  * Created by Deepak Kumar on 31/08/2019

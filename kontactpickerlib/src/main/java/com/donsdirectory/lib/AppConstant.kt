@@ -1,4 +1,4 @@
-package com.deepakkumardk.kontactpickerlib
+package com.donsdirectory.lib
 
 /**
  * Created by Deepak Kumar on 01/06/2019

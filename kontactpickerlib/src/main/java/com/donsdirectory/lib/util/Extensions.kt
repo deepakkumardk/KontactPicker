@@ -1,4 +1,4 @@
-package com.deepakkumardk.kontactpickerlib.util
+package com.donsdirectory.lib.util
 
 import android.app.Activity
 import android.content.ContentUris

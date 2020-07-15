@@ -1,4 +1,4 @@
-package com.deepakkumardk.kontactpickerlib
+package com.donsdirectory.lib
 
 import android.Manifest
 import android.animation.ArgbEvaluator
@@ -18,9 +18,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
-import com.deepakkumardk.kontactpickerlib.model.MyContacts
-import com.deepakkumardk.kontactpickerlib.model.SelectionMode
-import com.deepakkumardk.kontactpickerlib.util.*
+import com.donsdirectory.lib.model.MyContacts
+import com.donsdirectory.lib.model.SelectionMode
+import com.donsdirectory.lib.util.*
 import kotlinx.android.synthetic.main.activity_kontact_picker.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.longToast

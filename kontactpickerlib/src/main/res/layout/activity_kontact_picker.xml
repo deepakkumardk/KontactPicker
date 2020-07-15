@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.deepakkumardk.kontactpickerlib.KontactPickerActivity"
+    tools:context="com.donsdirectory.lib.KontactPickerActivity"
     tools:menu="@menu/kontact_menu">
 
     <androidx.recyclerview.widget.RecyclerView

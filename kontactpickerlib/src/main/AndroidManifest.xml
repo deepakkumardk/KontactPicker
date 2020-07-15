@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.deepakkumardk.kontactpickerlib">
+    package="com.donsdirectory.lib">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application>
         <activity
-            android:name="com.deepakkumardk.kontactpickerlib.KontactPickerActivity"
+            android:name="com.donsdirectory.lib.KontactPickerActivity"
             android:configChanges="keyboardHidden|orientation"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
             <meta-data

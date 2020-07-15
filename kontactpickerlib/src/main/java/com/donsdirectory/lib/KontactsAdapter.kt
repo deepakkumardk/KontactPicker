@@ -1,4 +1,4 @@
-package com.deepakkumardk.kontactpickerlib
+package com.donsdirectory.lib
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.deepakkumardk.kontactpickerlib.model.ImageMode
-import com.deepakkumardk.kontactpickerlib.model.MyContacts
-import com.deepakkumardk.kontactpickerlib.model.SelectionTickView
-import com.deepakkumardk.kontactpickerlib.util.*
+import com.donsdirectory.lib.model.ImageMode
+import com.donsdirectory.lib.model.MyContacts
+import com.donsdirectory.lib.model.SelectionTickView
+import com.donsdirectory.lib.util.*
 import de.hdodenhof.circleimageview.CircleImageView
 
 /**

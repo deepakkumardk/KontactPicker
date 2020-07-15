@@ -7,7 +7,7 @@
 
         <variable
             name="activity"
-            type="com.deepakkumardk.kontactpicker.MainActivity" />
+            type="com.donsdirectory.mobile.MainActivity" />
     </data>
 
     <LinearLayout

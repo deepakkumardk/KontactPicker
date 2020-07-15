@@ -1,4 +1,4 @@
-package com.deepakkumardk.kontactpickerlib.model
+package com.donsdirectory.lib.model
 
 import android.net.Uri
 import android.os.Parcelable

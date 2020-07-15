@@ -1,5 +1,31 @@
 <resources>
-    <string name="app_name">KontactPicker</string>
+    <string name="AppName">Don\'s Directory</string>
+
+    <!-- Help texts for the text boxes
+    Help text is what displays before the user clicks inside the box. -->
+    <string name="UsernameHelpText">Username</string>
+    <string name="PasswordHelpText">Password</string>
+
+    <!-- Text to display on buttons -->
+    <string name="LoginButtonText">Log-in</string>
+    <string name="SubscribeButtonText">Subscribe</string>
+    <string name="RecoveryButtonText">Forgot my Log-in</string>
+
+    <!-- Required text which describes the image -->
+    <string name="ImageDescription">Don\'s Directory logo</string>
+
+    <!-- Help text for the search bar text box -->
+    <string name="SearchHelpText">Search in Don\'s Directory and your phone book</string>
+
+    <string name="SearchButtonDescription">Click to search in Don\'s Directory and my phone book</string>
+
+    <!-- Text appearing underneath the search box when highlighted, giving search suggestions -->
+    <string name="SearchHint">e.g. Contact name, Location, or Industry</string>
+
+    <!-- These fields will be replaced by the layout filler function -->
+    <string name="primaryText">ADESCO-Advance Drilling Equipment Supply Co.</string>
+    <string name="secondaryText">Drilling, Completions Consultant</string>
+
     <string name="selected_contacts">Selected Contacts</string>
     <string name="colors">Colors</string>
     <string name="select">Select</string>

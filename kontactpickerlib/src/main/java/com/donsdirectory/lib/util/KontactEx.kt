@@ -1,9 +1,9 @@
-package com.deepakkumardk.kontactpickerlib.util
+package com.donsdirectory.lib.util
 
 import android.app.Activity
 import android.net.Uri
 import android.provider.ContactsContract
-import com.deepakkumardk.kontactpickerlib.model.MyContacts
+import com.donsdirectory.lib.model.MyContacts
 import org.jetbrains.anko.doAsyncResult
 import org.jetbrains.anko.onComplete
 

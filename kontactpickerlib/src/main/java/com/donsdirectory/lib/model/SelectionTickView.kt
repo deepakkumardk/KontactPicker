@@ -1,4 +1,4 @@
-package com.deepakkumardk.kontactpickerlib.model
+package com.donsdirectory.lib.model
 
 /**
  * Created by Deepak Kumar on 25/05/2019

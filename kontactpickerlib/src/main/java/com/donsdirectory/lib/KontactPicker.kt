@@ -1,12 +1,12 @@
-package com.deepakkumardk.kontactpickerlib
+package com.donsdirectory.lib
 
 import android.app.Activity
 import android.content.Intent
 import androidx.fragment.app.Fragment
-import com.deepakkumardk.kontactpickerlib.model.KontactPickerItem
-import com.deepakkumardk.kontactpickerlib.model.MyContacts
-import com.deepakkumardk.kontactpickerlib.util.KontactEx
-import com.deepakkumardk.kontactpickerlib.util.KontactPickerUI
+import com.donsdirectory.lib.model.KontactPickerItem
+import com.donsdirectory.lib.model.MyContacts
+import com.donsdirectory.lib.util.KontactEx
+import com.donsdirectory.lib.util.KontactPickerUI
 
 /**
  * Created by Deepak Kumar on 25/05/2019

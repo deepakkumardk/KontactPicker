@@ -1,4 +1,4 @@
-package com.deepakkumardk.kontactpicker
+package com.donsdirectory.mobile
 
 import android.view.LayoutInflater
 import android.view.View

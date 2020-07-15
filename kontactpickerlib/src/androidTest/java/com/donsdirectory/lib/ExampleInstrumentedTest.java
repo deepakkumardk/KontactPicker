@@ -1,4 +1,4 @@
-package com.deepakkumardk.kontactpickerlib;
+package com.donsdirectory.lib;
 
 import android.content.Context;
 import androidx.test.InstrumentationRegistry;

@@ -1,4 +1,4 @@
-package com.deepakkumardk.kontactpicker
+package com.donsdirectory.mobile
 
 import android.app.Activity
 import android.content.Intent
@@ -11,16 +11,16 @@ import androidx.lifecycle.MutableLiveData
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.color.ColorPalette
 import com.afollestad.materialdialogs.color.colorChooser
-import com.deepakkumardk.kontactpicker.databinding.ActivityMainBinding
-import com.deepakkumardk.kontactpickerlib.KontactPicker
-import com.deepakkumardk.kontactpickerlib.model.ImageMode
-import com.deepakkumardk.kontactpickerlib.model.KontactPickerItem
-import com.deepakkumardk.kontactpickerlib.model.SelectionMode
-import com.deepakkumardk.kontactpickerlib.model.SelectionTickView
-import com.deepakkumardk.kontactpickerlib.util.hide
-import com.deepakkumardk.kontactpickerlib.util.init
-import com.deepakkumardk.kontactpickerlib.util.log
-import com.deepakkumardk.kontactpickerlib.util.show
+import com.donsdirectory.lib.KontactPicker
+import com.donsdirectory.lib.model.ImageMode
+import com.donsdirectory.lib.model.KontactPickerItem
+import com.donsdirectory.lib.model.SelectionMode
+import com.donsdirectory.lib.model.SelectionTickView
+import com.donsdirectory.lib.util.hide
+import com.donsdirectory.lib.util.init
+import com.donsdirectory.lib.util.log
+import com.donsdirectory.lib.util.show
+import com.donsdirectory.mobile.databinding.ActivityMainBinding
 
 /**
  * Created by Deepak Kumar on 25/05/2019
