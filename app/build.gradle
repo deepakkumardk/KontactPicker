@@ -6,16 +6,17 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.deepakkumardk.kontactpicker"
-        minSdkVersion 16
+        applicationId 'com.donsdirectory.mobile'
+        minSdkVersion 23
         targetSdkVersion 29
-        versionCode 6
-        versionName "1.4.0"
+        versionCode 10
+        versionName '0.8'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
     }
     
     buildTypes {
