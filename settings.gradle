@@ -1,1 +1,1 @@
-include ':app', ':kontactpickerlib'
+include ':app'

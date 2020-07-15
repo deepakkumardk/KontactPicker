@@ -30,4 +30,9 @@
     <string name="colors">Colors</string>
     <string name="select">Select</string>
     <string name="select_none">Select None</string>
+
+    <string name="contact_image">Contact Image</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Search…</string>
+    <string name="selection_tick_view_large">SelectionTickViewLarge</string>
 </resources>

@@ -67,7 +67,7 @@ class KontactPickerActivity : AppCompatActivity() {
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val search = menu?.findItem(R.id.action_search)?.actionView as SearchView
 
-        search.queryHint = getString(R.string.search_hint)
+        search.queryHint = getString(R.string.SearchHint)
         search.apply {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
         }

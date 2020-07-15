@@ -44,7 +44,6 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:color:3.1.0'
 
 //    implementation 'com.github.deepakkumardk:KontactPicker:1.2.0'
-    implementation project(':kontactpickerlib')
 
 //  imports from lib build.gradle
     implementation fileTree(dir: 'libs', include: ['*.jar'])
