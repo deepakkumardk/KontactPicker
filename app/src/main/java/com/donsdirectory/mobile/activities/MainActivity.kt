@@ -3,18 +3,15 @@ package com.donsdirectory.mobile.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import com.donsdirectory.mobile.R
 import com.donsdirectory.mobile.adapters.ContactAdapter
 import com.donsdirectory.mobile.databinding.ActivityMainBinding
 import com.donsdirectory.mobile.lib.KontactPicker
 import com.donsdirectory.mobile.model.*
-import com.donsdirectory.mobile.util.hide
 import com.donsdirectory.mobile.util.init
-import com.donsdirectory.mobile.util.log
-import com.donsdirectory.mobile.util.show
 
 /**
  * Created by Deepak Kumar on 25/05/2019
@@ -33,11 +30,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,
-            R.layout.activity_main
-        )
-        binding.activity = this
-        binding.lifecycleOwner = this
+        setContentView(R.layout.activity_main)
+//        binding = DataBindingUtil.setContentView(this,
+//            R.layout.activity_main
+//        )
+//        binding.activity = this
+//        binding.lifecycleOwner = this
 
         contactsAdapter =
             ContactAdapter(myContacts)
@@ -51,11 +49,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun showAllKontacts() {
         val startTime = System.currentTimeMillis()
-        binding.progressBar.show()
+//        binding.progressBar.show()
         myContacts?.clear()
         contactsAdapter?.updateList(myContacts)
         KontactPicker.getAllKontactsWithUri(this) {
-            binding.progressBar.hide()
+//            binding.progressBar.hide()
             for (contact in it) {
                 myContacts?.add(
                     Contact(
@@ -68,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             contactsAdapter?.updateList(myContacts)
 
             val fetchingTime = System.currentTimeMillis() - startTime
-            log("Fetching Completed in $fetchingTime ms")
+            Log.d("Main","Fetching Completed in $fetchingTime ms")
         }
     }
 
@@ -123,7 +121,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == 3000) {
             val list = KontactPicker.getSelectedKontacts(data)
-            binding.titleSelectedContacts.setText(R.string.selected_contacts)
+//            binding.titleSelectedContacts.setText(R.string.selected_contacts)
             myContacts = arrayListOf()
             if (list != null) {
                 for (contact in list) {

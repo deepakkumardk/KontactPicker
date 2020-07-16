@@ -44,10 +44,10 @@ class KontactPickerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        applyCustomTheme(KontactPickerUI.getTheme())
+//        applyCustomTheme(KontactPickerUI.getTheme())
         setContentView(R.layout.activity_kontact_picker)
 
-        debugMode = KontactPickerUI.getDebugMode()
+//        debugMode = KontactPickerUI.getDebugMode()
         logInitialValues()
         initToolbar()
 

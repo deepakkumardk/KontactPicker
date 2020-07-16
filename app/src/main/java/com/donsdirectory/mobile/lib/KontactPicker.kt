@@ -2,7 +2,6 @@ package com.donsdirectory.mobile.lib
 
 import android.app.Activity
 import android.content.Intent
-import androidx.fragment.app.Fragment
 import com.donsdirectory.mobile.activities.KontactPickerActivity
 import com.donsdirectory.mobile.model.KontactPickerItem
 import com.donsdirectory.mobile.model.MyContacts
@@ -19,14 +18,6 @@ class KontactPicker {
         KontactPickerUI.setPickerUI(item)
         val intent = Intent(activity, KontactPickerActivity::class.java)
         activity.let {
-            it?.startActivityForResult(intent, requestCode)
-        }
-    }
-
-    fun startPickerForResult(fragment: Fragment?, item: KontactPickerItem, requestCode: Int) {
-        KontactPickerUI.setPickerUI(item)
-        val intent = Intent(fragment?.context, KontactPickerActivity::class.java)
-        fragment.let {
             it?.startActivityForResult(intent, requestCode)
         }
     }

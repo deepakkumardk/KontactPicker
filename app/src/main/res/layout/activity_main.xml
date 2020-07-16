@@ -1,186 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.MainActivity">
 
-    <data>
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:gravity="center_horizontal"-->
+    <!--        android:orientation="vertical"-->
+    <!--        tools:context=".activities.MainActivity">-->
 
-        <variable
-            name="activity"
-            type="com.donsdirectory.mobile.activities.MainActivity" />
-    </data>
+    <!--        <RadioGroup-->
+    <!--            android:id="@+id/imageModeGroup"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_gravity="center"-->
+    <!--            android:layout_marginTop="8dp"-->
+    <!--            android:orientation="horizontal"-->
+    <!--            app:checkedPosition="@={activity.imageModeGroup}">-->
 
-    <LinearLayout
+    <!--            <RadioButton-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="None"-->
+    <!--                tools:ignore="HardcodedText" />-->
+
+    <!--            <RadioButton-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="8dp"-->
+    <!--                android:layout_marginLeft="8dp"-->
+    <!--                android:text="TextMode"-->
+    <!--                tools:ignore="HardcodedText" />-->
+
+    <!--            <RadioButton-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="8dp"-->
+    <!--                android:layout_marginLeft="8dp"-->
+    <!--                android:text="UserImageMode"-->
+    <!--                tools:ignore="HardcodedText" />-->
+    <!--        </RadioGroup>-->
+
+    <!--        <RadioGroup-->
+    <!--            android:id="@+id/selectionTickViewGroup"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_gravity="center"-->
+    <!--            android:layout_marginTop="8dp"-->
+    <!--            android:orientation="horizontal"-->
+    <!--            app:checkedPosition="@={activity.selectionTickViewGroup}">-->
+
+    <!--            <RadioButton-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="SmallView"-->
+    <!--                tools:ignore="HardcodedText" />-->
+
+    <!--            <RadioButton-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="8dp"-->
+    <!--                android:layout_marginLeft="8dp"-->
+    <!--                android:text="LargeView"-->
+    <!--                tools:ignore="HardcodedText" />-->
+    <!--        </RadioGroup>-->
+
+    <!--        <RadioGroup-->
+    <!--            android:id="@+id/selectionModeGroup"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_gravity="center"-->
+    <!--            android:layout_marginTop="8dp"-->
+    <!--            android:orientation="horizontal"-->
+    <!--            app:checkedPosition="@={activity.selectionModeGroup}">-->
+
+    <!--            <RadioButton-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="Single Selection"-->
+    <!--                tools:ignore="HardcodedText" />-->
+
+    <!--            <RadioButton-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="8dp"-->
+    <!--                android:layout_marginLeft="8dp"-->
+    <!--                android:text="Multiple Selection"-->
+    <!--                tools:ignore="HardcodedText" />-->
+    <!--        </RadioGroup>-->
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_gravity="center"-->
+    <!--            android:layout_marginTop="8dp">-->
+
+    <!--            <CheckBox-->
+    <!--                android:id="@+id/checkBox"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_gravity="start"-->
+    <!--                android:checked="@={activity.debugModeCheck}"-->
+    <!--                android:text="Debug Mode"-->
+    <!--                tools:ignore="HardcodedText" />-->
+
+    <!--&lt;!&ndash;            <Button&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:id="@+id/btnColorPicker"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:layout_marginStart="16dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:layout_marginLeft="16dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:padding="0dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:text="Color"&ndash;&gt;-->
+    <!--&lt;!&ndash;                android:textAllCaps="false"&ndash;&gt;-->
+    <!--&lt;!&ndash;                tools:ignore="HardcodedText" />&ndash;&gt;-->
+    <!--        </LinearLayout>-->
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginTop="8dp">-->
+
+    <Button
+        android:id="@+id/kontactPickerBtn"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBlue500"
+        android:padding="4dp"
+        android:text="Open KontactPicker"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintEnd_toStartOf="@+id/getAllKontactBtn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/getAllKontactBtn"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBlue500"
+        android:padding="4dp"
+        android:text="Show All Kontacts"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/kontactPickerBtn"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+    <!--        </LinearLayout>-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/titleSelectedContacts"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_margin="4dp"-->
+    <!--            android:textColor="@color/colorBlack"-->
+    <!--            android:textSize="16sp"-->
+    <!--            android:textStyle="bold"-->
+    <!--            tools:text="@string/selected_contacts" />-->
+
+    <!--        <ProgressBar-->
+    <!--            android:id="@+id/progressBar"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_gravity="center"-->
+    <!--            android:progressTint="@color/design_default_color_primary_dark"-->
+    <!--            android:visibility="gone"-->
+    <!--            tools:targetApi="lollipop" />-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        tools:context=".activities.MainActivity">
+        android:layout_height="683dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/kontactPickerBtn"
+        tools:itemCount="4"
+        tools:listitem="@layout/item_contact" />
 
-        <RadioGroup
-            android:id="@+id/imageModeGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            app:checkedPosition="@={activity.imageModeGroup}">
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="None"
-                tools:ignore="HardcodedText" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:text="TextMode"
-                tools:ignore="HardcodedText" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:text="UserImageMode"
-                tools:ignore="HardcodedText" />
-        </RadioGroup>
-
-        <RadioGroup
-            android:id="@+id/selectionTickViewGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            app:checkedPosition="@={activity.selectionTickViewGroup}">
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SmallView"
-                tools:ignore="HardcodedText" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:text="LargeView"
-                tools:ignore="HardcodedText" />
-        </RadioGroup>
-
-        <RadioGroup
-            android:id="@+id/selectionModeGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            app:checkedPosition="@={activity.selectionModeGroup}">
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Single Selection"
-                tools:ignore="HardcodedText" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:text="Multiple Selection"
-                tools:ignore="HardcodedText" />
-        </RadioGroup>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp">
-
-            <CheckBox
-                android:id="@+id/checkBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:checked="@={activity.debugModeCheck}"
-                android:text="Debug Mode"
-                tools:ignore="HardcodedText" />
-
-<!--            <Button-->
-<!--                android:id="@+id/btnColorPicker"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginLeft="16dp"-->
-<!--                android:padding="0dp"-->
-<!--                android:text="Color"-->
-<!--                android:textAllCaps="false"-->
-<!--                tools:ignore="HardcodedText" />-->
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <Button
-                android:id="@+id/kontactPickerBtn"
-                style="?android:attr/buttonBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorBlue500"
-                android:padding="4dp"
-                android:text="Open KontactPicker"
-                android:textColor="@color/colorWhite"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/getAllKontactBtn"
-                style="?android:attr/buttonBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:background="@color/colorBlue500"
-                android:padding="4dp"
-                android:text="Show All Kontacts"
-                android:textColor="@color/colorWhite"
-                android:textSize="18sp"
-                tools:ignore="HardcodedText" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/titleSelectedContacts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:textColor="@color/colorBlack"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="@string/selected_contacts" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:progressTint="@color/design_default_color_primary_dark"
-            android:visibility="gone"
-            tools:targetApi="lollipop" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            tools:itemCount="4"
-            tools:listitem="@layout/item_contact" />
-
-    </LinearLayout>
-</layout>
+    <!--    </LinearLayout>-->
+</androidx.constraintlayout.widget.ConstraintLayout>
