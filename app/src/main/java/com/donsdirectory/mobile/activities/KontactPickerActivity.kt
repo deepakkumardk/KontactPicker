@@ -10,6 +10,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
@@ -18,10 +19,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
-import com.donsdirectory.mobile.EXTRA_SELECTED_CONTACTS
 import com.donsdirectory.mobile.R
-import com.donsdirectory.mobile.RC_READ_CONTACTS
 import com.donsdirectory.mobile.adapters.KontactsAdapter
+import com.donsdirectory.mobile.lib.EXTRA_SELECTED_CONTACTS
+import com.donsdirectory.mobile.lib.RC_READ_CONTACTS
 import com.donsdirectory.mobile.model.MyContacts
 import com.donsdirectory.mobile.model.SelectionMode
 import com.donsdirectory.mobile.util.*
@@ -200,9 +201,8 @@ class KontactPickerActivity : AppCompatActivity() {
         if (contactReadPermission) {
             loadContacts()
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS),
-                RC_READ_CONTACTS
-            )
+            Log.d("KPA", "Permission requested")
+            requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), RC_READ_CONTACTS)
         }
     }
 

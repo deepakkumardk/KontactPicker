@@ -1,13 +1,13 @@
-package com.donsdirectory.mobile
+package com.donsdirectory.mobile.lib
 
 import android.app.Activity
 import android.content.Intent
 import androidx.fragment.app.Fragment
+import com.donsdirectory.mobile.activities.KontactPickerActivity
 import com.donsdirectory.mobile.model.KontactPickerItem
 import com.donsdirectory.mobile.model.MyContacts
 import com.donsdirectory.mobile.util.KontactEx
 import com.donsdirectory.mobile.util.KontactPickerUI
-import com.donsdirectory.mobile.activities.KontactPickerActivity
 
 /**
  * Created by Deepak Kumar on 25/05/2019

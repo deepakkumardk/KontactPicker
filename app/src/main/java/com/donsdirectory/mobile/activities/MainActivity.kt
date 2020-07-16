@@ -6,19 +6,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
-import com.donsdirectory.mobile.KontactPicker
-import com.donsdirectory.mobile.model.ImageMode
-import com.donsdirectory.mobile.model.KontactPickerItem
-import com.donsdirectory.mobile.model.SelectionMode
-import com.donsdirectory.mobile.model.SelectionTickView
+import com.donsdirectory.mobile.R
+import com.donsdirectory.mobile.adapters.ContactAdapter
+import com.donsdirectory.mobile.databinding.ActivityMainBinding
+import com.donsdirectory.mobile.lib.KontactPicker
+import com.donsdirectory.mobile.model.*
 import com.donsdirectory.mobile.util.hide
 import com.donsdirectory.mobile.util.init
 import com.donsdirectory.mobile.util.log
 import com.donsdirectory.mobile.util.show
-import com.donsdirectory.mobile.model.Contact
-import com.donsdirectory.mobile.adapters.ContactAdapter
-import com.donsdirectory.mobile.R
-import com.donsdirectory.mobile.databinding.ActivityMainBinding
 
 /**
  * Created by Deepak Kumar on 25/05/2019
@@ -50,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.kontactPickerBtn.setOnClickListener { openKontactPicker() }
         binding.getAllKontactBtn.setOnClickListener { showAllKontacts() }
-        //binding.btnColorPicker.setOnClickListener { openColorPicker() }
+//        binding.btnColorPicker.setOnClickListener { openColorPicker() }
     }
 
     private fun showAllKontacts() {
@@ -101,7 +97,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        KontactPicker().startPickerForResult(this, item, 3000)
+        KontactPicker()
+            .startPickerForResult(this, item, 3000)
     }
 
 //    private fun openColorPicker() {

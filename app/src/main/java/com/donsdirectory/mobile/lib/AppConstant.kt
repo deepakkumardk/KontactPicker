@@ -1,4 +1,4 @@
-package com.donsdirectory.mobile
+package com.donsdirectory.mobile.lib
 
 /**
  * Created by Deepak Kumar on 01/06/2019
