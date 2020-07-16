@@ -51,6 +51,7 @@ class ContactAdapter(private var contactsList: ArrayList<Contact>?) :
                 .error(R.drawable.ic_account_circle_white)
                 .into(contactImage)
         }
+
     }
 
 }
