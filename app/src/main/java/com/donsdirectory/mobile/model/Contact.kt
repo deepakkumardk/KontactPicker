@@ -9,5 +9,6 @@ import android.net.Uri
 data class Contact(
     var contactName: String? = null,
     var contactNumber: String? = null,
-    var contactUri: Uri? = null
+    var contactUri: Uri? = null,
+    var contactEmail: String? = null
 )

@@ -38,11 +38,13 @@ class ContactAdapter(private var contactsList: ArrayList<Contact>?) :
         private val contactName: TextView = view.findViewById(R.id.contact_name)
         private val contactMobile: TextView = view.findViewById(R.id.contact_mobile)
         private val contactImage: CircleImageView = view.findViewById(R.id.contact_image)
+        private val contactEmail: TextView = view.findViewById(R.id.contact_email)
 
         fun bind(position: Int) {
             val contact = contactsList?.get(position)
             contactName.text = contact?.contactName
             contactMobile.text = contact?.contactNumber
+            contactEmail.text = contact?.contactEmail
 
             Glide.with(itemView.context)
                 .load(contact?.contactUri)
