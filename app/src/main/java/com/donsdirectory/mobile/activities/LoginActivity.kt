@@ -1,6 +1,5 @@
 package com.donsdirectory.mobile.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
@@ -59,8 +58,6 @@ class LoginPage : AppCompatActivity() {
 
                 KontactPicker().startPickerForResult(this, item, RC_READ_CONTACTS)
 
-                val intent = Intent(this, KontactPickerActivity::class.java)
-                startActivity(intent)
             } else {
                 makeToast("Invalid username or password")
             }
