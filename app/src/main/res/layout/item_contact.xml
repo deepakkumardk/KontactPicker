@@ -9,10 +9,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="4dp"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:orientation="vertical"
-        android:animateLayoutChanges="true">
+        android:padding="4dp">
 
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -61,6 +61,19 @@
             android:visibility="gone"
             tools:ignore="RelativeOverlap"
             tools:text="Invite" />
+
+        <TextView
+            android:id="@+id/contact_email"
+            android:layout_width="395dp"
+            android:layout_height="wrap_content"
+            tools:text="Contact Email" />
+
+        <TextView
+            android:id="@+id/contact_business"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            tools:text="Business " />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
